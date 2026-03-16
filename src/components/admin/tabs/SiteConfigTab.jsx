@@ -62,7 +62,7 @@ export default function SiteConfigTab() {
       </div>
       <button
         type="submit"
-        className="px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-500 hover:to-violet-500 text-white transition-all duration-200 shadow-lg shadow-purple-900/30"
+        className="w-full sm:w-auto px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-500 hover:to-violet-500 text-white transition-all duration-200 shadow-lg shadow-purple-900/30"
       >
         {saved ? "✓ Saved!" : "Save Changes"}
       </button>

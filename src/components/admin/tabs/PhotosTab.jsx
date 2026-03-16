@@ -34,16 +34,16 @@ export default function PhotosTab() {
       </div>
 
       {adding && (
-        <div className="bg-white/5 border border-purple-500/30 rounded-2xl p-6 space-y-4">
+        <div className="bg-white/5 border border-purple-500/30 rounded-2xl p-4 md:p-6 space-y-4">
           <h3 className="text-white font-semibold">Add Photo</h3>
           <div>
             <label className={labelCls}>Image URL</label>
             <input className={inputCls} value={form.url} onChange={e => setForm({...form, url: e.target.value})} placeholder="https://..." />
           </div>
           {form.url && (
-            <img src={form.url} alt="Preview" className="rounded-xl h-40 w-full object-cover border border-white/10" onError={e => e.target.style.display='none'} />
+            <img src={form.url} alt="Preview" className="rounded-xl h-40 w-full object-cover border border-white/10" onError={e => e.currentTarget.style.display='none'} />
           )}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className={labelCls}>Caption</label>
               <input className={inputCls} value={form.caption} onChange={e => setForm({...form, caption: e.target.value})} placeholder="Photo caption" />
@@ -65,8 +65,8 @@ export default function PhotosTab() {
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         {photos.map((p) => (
           <div key={p.id} className="group relative rounded-2xl overflow-hidden border border-white/10 hover:border-purple-500/40 transition-all">
-            <img src={p.url} alt={p.caption} className="w-full h-44 object-cover" onError={e => { e.target.src = ''; e.target.className = 'hidden'; }} />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+            <img src={p.url} alt={p.caption} className="w-full h-44 object-cover" onError={e => { e.currentTarget.src = ''; e.currentTarget.className = 'hidden'; }} />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity flex items-end p-3">
               <div className="flex-1">
                 <p className="text-white text-xs font-medium">{p.caption}</p>
                 <p className="text-gray-400 text-xs">{p.category}</p>

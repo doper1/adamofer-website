@@ -42,9 +42,9 @@ export default function ExperienceTab() {
       </div>
 
       {editing && (
-        <div className="bg-white/5 border border-purple-500/30 rounded-2xl p-6 space-y-4">
+        <div className="bg-white/5 border border-purple-500/30 rounded-2xl p-4 md:p-6 space-y-4">
           <h3 className="text-white font-semibold">{editing === "new" ? "Add Experience" : "Edit Experience"}</h3>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className={labelCls}>Role / Title</label>
               <input className={inputCls} value={form.role} onChange={e => setForm({...form, role: e.target.value})} placeholder="Senior DevOps Engineer" />
@@ -53,7 +53,7 @@ export default function ExperienceTab() {
               <label className={labelCls}>Company</label>
               <input className={inputCls} value={form.company} onChange={e => setForm({...form, company: e.target.value})} placeholder="Company Name" />
             </div>
-            <div className="col-span-2">
+            <div className="col-span-1 sm:col-span-2">
               <label className={labelCls}>Period</label>
               <input className={inputCls} value={form.period} onChange={e => setForm({...form, period: e.target.value})} placeholder="2023 – Present" />
             </div>
@@ -94,7 +94,7 @@ export default function ExperienceTab() {
                   <p className="text-white font-semibold text-sm">{exp.role}</p>
                   <p className="text-purple-400 text-xs">{exp.company} · {exp.period}</p>
                 </div>
-                <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+                <div className="flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity flex-shrink-0">
                   <button onClick={() => openEdit(exp)} className="px-3 py-1.5 rounded-lg border border-white/15 text-gray-300 hover:text-white text-xs transition-colors">Edit</button>
                   <button onClick={() => remove(exp.id)} className="px-3 py-1.5 rounded-lg border border-red-500/30 text-red-400 hover:text-red-300 text-xs transition-colors">Delete</button>
                 </div>

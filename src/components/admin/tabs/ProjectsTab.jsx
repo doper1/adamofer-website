@@ -44,10 +44,10 @@ export default function ProjectsTab() {
       </div>
 
       {editing && (
-        <div className="bg-white/5 border border-purple-500/30 rounded-2xl p-6 space-y-4">
+        <div className="bg-white/5 border border-purple-500/30 rounded-2xl p-4 md:p-6 space-y-4">
           <h3 className="text-white font-semibold">{editing === "new" ? "Add Project" : "Edit Project"}</h3>
-          <div className="grid grid-cols-4 gap-4">
-            <div className="col-span-3">
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+            <div className="sm:col-span-3">
               <label className={labelCls}>Title</label>
               <input className={inputCls} value={form.title} onChange={e => setForm({...form, title: e.target.value})} placeholder="Project Name" />
             </div>
@@ -94,7 +94,7 @@ export default function ProjectsTab() {
               <p className="text-white font-semibold text-sm">{p.title}</p>
               <p className="text-gray-500 text-xs mt-0.5 truncate">{p.tags.join(", ")}</p>
             </div>
-            <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
               <button onClick={() => openEdit(p)} className="px-3 py-1.5 rounded-lg border border-white/15 text-gray-300 hover:text-white text-xs transition-colors">Edit</button>
               <button onClick={() => remove(p.id)} className="px-3 py-1.5 rounded-lg border border-red-500/30 text-red-400 hover:text-red-300 text-xs transition-colors">Delete</button>
             </div>

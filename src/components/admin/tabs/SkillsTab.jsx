@@ -45,9 +45,9 @@ export default function SkillsTab() {
       </div>
 
       {editing && (
-        <div className="bg-white/5 border border-purple-500/30 rounded-2xl p-6 space-y-4">
+        <div className="bg-white/5 border border-purple-500/30 rounded-2xl p-4 md:p-6 space-y-4">
           <h3 className="text-white font-semibold">{editing === "new" ? "Add Skill Group" : "Edit Skill Group"}</h3>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className={labelCls}>Category Name</label>
               <input className={inputCls} value={form.category} onChange={e => setForm({...form, category: e.target.value})} placeholder="DevOps & Cloud" />
@@ -85,7 +85,7 @@ export default function SkillsTab() {
             <div className="flex items-center gap-3 mb-3">
               <span className="text-2xl">{g.icon}</span>
               <p className="text-white font-semibold text-sm flex-1">{g.category}</p>
-              <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                 <button onClick={() => openEdit(g)} className="px-3 py-1.5 rounded-lg border border-white/15 text-gray-300 hover:text-white text-xs transition-colors">Edit</button>
                 <button onClick={() => remove(g.id)} className="px-3 py-1.5 rounded-lg border border-red-500/30 text-red-400 hover:text-red-300 text-xs transition-colors">Delete</button>
               </div>

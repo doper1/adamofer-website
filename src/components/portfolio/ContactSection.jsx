@@ -15,15 +15,15 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-16 md:py-24 px-4 md:px-8 relative overflow-hidden">
+    <section id="contact" className="py-12 md:py-24 px-4 md:px-8 relative overflow-hidden">
       {/* Background blob */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-purple-700/10 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-3xl mx-auto relative z-10">
-        <div className="text-center mb-14">
-          <p className="text-purple-400 text-sm uppercase tracking-[0.3em] font-medium mb-3">Let's Talk</p>
-          <h2 className="text-4xl md:text-5xl font-bold text-white">Get In Touch</h2>
-          <div className="mt-4 w-16 h-1 bg-gradient-to-r from-purple-500 to-violet-500 mx-auto rounded-full" />
+        <div className="text-center mb-10 md:mb-14">
+          <p className="text-purple-400 text-xs md:text-sm uppercase tracking-[0.2em] md:tracking-[0.3em] font-medium mb-3">Let's Talk</p>
+          <h2 className="text-2xl md:text-5xl font-bold text-white">Get In Touch</h2>
+          <div className="mt-4 w-12 md:w-16 h-1 bg-gradient-to-r from-purple-500 to-violet-500 mx-auto rounded-full" />
           <p className="text-gray-500 mt-6 text-base leading-relaxed">
             Interested in working together or just want to say hi? Drop me a message — I read everything.
           </p>
@@ -37,7 +37,7 @@ export default function ContactSection() {
             <button onClick={() => setStatus(null)} className="mt-6 text-purple-400 hover:text-purple-300 text-sm underline">Send another</button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-10 space-y-6">
+          <form onSubmit={handleSubmit} className="bg-white/5 border border-white/10 rounded-3xl p-5 md:p-10 space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm text-gray-400 mb-2 font-medium">Your Name</label>

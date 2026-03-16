@@ -43,14 +43,14 @@ const certificates = [
 
 export default function CertificatesSection() {
   return (
-    <section id="certifications" className="py-16 md:py-24 px-4 md:px-8 relative overflow-hidden">
+    <section id="certifications" className="py-12 md:py-24 px-4 md:px-8 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-950/10 to-transparent pointer-events-none" />
 
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-purple-400 text-sm uppercase tracking-[0.3em] font-medium mb-3">Verified Skills</p>
-          <h2 className="text-4xl md:text-5xl font-bold text-white">Certifications</h2>
-          <div className="mt-4 w-16 h-1 bg-gradient-to-r from-purple-500 to-violet-500 mx-auto rounded-full" />
+        <div className="text-center mb-12 md:mb-16">
+          <p className="text-purple-400 text-xs md:text-sm uppercase tracking-[0.2em] md:tracking-[0.3em] font-medium mb-3">Verified Skills</p>
+          <h2 className="text-2xl md:text-5xl font-bold text-white">Certifications</h2>
+          <div className="mt-4 w-12 md:w-16 h-1 bg-gradient-to-r from-purple-500 to-violet-500 mx-auto rounded-full" />
           <p className="text-gray-500 mt-5 text-base max-w-xl mx-auto">
             Industry-recognized credentials validating my expertise in cloud infrastructure and DevOps.
           </p>
@@ -63,13 +63,13 @@ export default function CertificatesSection() {
               href={cert.credlyUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-purple-500/40 hover:bg-white/[0.07] transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-purple-900/20 flex flex-col items-center text-center cursor-pointer"
+              className="group relative bg-white/5 border border-white/10 rounded-2xl p-4 md:p-6 hover:border-purple-500/40 hover:bg-white/[0.07] transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-purple-900/20 flex flex-col items-center text-center cursor-pointer"
             >
               {/* Top gradient accent */}
               <div className={`absolute top-0 left-0 right-0 h-1 rounded-t-2xl bg-gradient-to-r ${cert.color}`} />
 
               {/* Badge or icon */}
-              <div className="mt-2 mb-5 w-20 h-20 flex items-center justify-center">
+              <div className="mt-2 mb-4 w-16 h-16 md:w-20 md:h-20 flex items-center justify-center">
                 {cert.badge ? (
                   <img
                     src={cert.badge}
@@ -84,7 +84,7 @@ export default function CertificatesSection() {
                   />
                 ) : null}
                 <div
-                  className={`text-4xl w-20 h-20 rounded-full bg-gradient-to-br ${cert.color} flex items-center justify-center ${cert.badge ? 'hidden' : 'flex'}`}
+                  className={`text-3xl md:text-4xl w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br ${cert.color} flex items-center justify-center ${cert.badge ? 'hidden' : 'flex'}`}
                   style={{ display: cert.badge ? 'none' : 'flex' }}
                 >
                   {cert.icon}
@@ -95,7 +95,7 @@ export default function CertificatesSection() {
                 {cert.level}
               </span>
 
-              <h3 className="text-sm font-bold text-white leading-snug mb-2 group-hover:text-purple-300 transition-colors">
+              <h3 className="text-xs md:text-sm font-bold text-white leading-snug mb-2 group-hover:text-purple-300 transition-colors">
                 {cert.title}
               </h3>
 

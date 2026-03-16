@@ -58,9 +58,9 @@ export default function NavBar() {
       </div>
 
       {menuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 h-screen bg-black/95 backdrop-blur-xl px-6 py-8 flex flex-col gap-6 items-center">
+        <div className="md:hidden absolute top-full left-0 right-0 h-screen bg-black/95 backdrop-blur-xl px-6 py-8 flex flex-col gap-4 items-center">
           {links.map((l) => (
-            <button key={l} onClick={() => scrollTo(l)} className="text-xl font-medium text-gray-300 hover:text-white uppercase tracking-widest w-full text-center py-2">
+            <button key={l} onClick={() => scrollTo(l)} className="text-lg font-medium text-gray-300 hover:text-white uppercase tracking-widest w-full text-center py-2">
               {l}
             </button>
           ))}

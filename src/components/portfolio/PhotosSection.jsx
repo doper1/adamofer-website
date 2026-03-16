@@ -23,12 +23,12 @@ const photos = [
 
 export default function PhotosSection() {
   return (
-    <section id="photos" className="py-16 md:py-24 px-4 md:px-8">
+    <section id="photos" className="py-12 md:py-24 px-4 md:px-8">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-purple-400 text-sm uppercase tracking-[0.3em] font-medium mb-3">Beyond the Screen</p>
-          <h2 className="text-4xl md:text-5xl font-bold text-white">A Glimpse of Me</h2>
-          <div className="mt-4 w-16 h-1 bg-gradient-to-r from-purple-500 to-violet-500 mx-auto rounded-full" />
+        <div className="text-center mb-12 md:mb-16">
+          <p className="text-purple-400 text-xs md:text-sm uppercase tracking-[0.2em] md:tracking-[0.3em] font-medium mb-3">Beyond the Screen</p>
+          <h2 className="text-2xl md:text-5xl font-bold text-white">A Glimpse of Me</h2>
+          <div className="mt-4 w-12 md:w-16 h-1 bg-gradient-to-r from-purple-500 to-violet-500 mx-auto rounded-full" />
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

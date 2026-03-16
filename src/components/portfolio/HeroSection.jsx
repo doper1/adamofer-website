@@ -97,14 +97,14 @@ export default function HeroSection() {
       <div className="absolute inset-0 h-[120%] bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
 
       <div className="relative z-10 text-center px-4 md:px-8 max-w-4xl mx-auto">
-        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-6 leading-none">
+        <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-6 leading-none">
           <span className="text-white">Adam</span>{" "}
           <span className="bg-gradient-to-r from-purple-400 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
             Ofer
           </span>
         </h1>
 
-        <p className="text-lg md:text-xl text-gray-400 font-light mb-4 tracking-wide">
+        <p className="text-base md:text-xl text-gray-400 font-light mb-4 tracking-wide">
           DevOps Engineer &amp; Software Developer
         </p>
 
@@ -116,13 +116,13 @@ export default function HeroSection() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
             onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
-            className="px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-500 hover:to-violet-500 text-white font-semibold text-base transition-all duration-300 shadow-xl shadow-purple-900/40 hover:shadow-purple-800/60 hover:-translate-y-0.5"
+            className="px-6 py-3 md:px-8 md:py-4 rounded-full bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-500 hover:to-violet-500 text-white font-semibold text-base transition-all duration-300 shadow-xl shadow-purple-900/40 hover:shadow-purple-800/60 hover:-translate-y-0.5"
           >
             View My Work
           </button>
           <button
             onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-            className="px-8 py-4 rounded-full border border-white/20 text-white font-semibold text-base hover:border-purple-500/50 hover:bg-white/5 transition-all duration-300"
+            className="px-6 py-3 md:px-8 md:py-4 rounded-full border border-white/20 text-white font-semibold text-base hover:border-purple-500/50 hover:bg-white/5 transition-all duration-300"
           >
             Get In Touch
           </button>

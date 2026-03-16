@@ -21,21 +21,21 @@ const skills = [
 
 export default function ExpertiseSection() {
   return (
-    <section id="expertise" className="py-16 md:py-24 px-4 md:px-8 relative overflow-hidden">
+    <section id="expertise" className="py-12 md:py-24 px-4 md:px-8 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-950/10 to-transparent pointer-events-none" />
 
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-purple-400 text-sm uppercase tracking-[0.3em] font-medium mb-3">What I Do</p>
-          <h2 className="text-4xl md:text-5xl font-bold text-white">Expertise</h2>
-          <div className="mt-4 w-16 h-1 bg-gradient-to-r from-purple-500 to-violet-500 mx-auto rounded-full" />
+        <div className="text-center mb-12 md:mb-16">
+          <p className="text-purple-400 text-xs md:text-sm uppercase tracking-[0.2em] md:tracking-[0.3em] font-medium mb-3">What I Do</p>
+          <h2 className="text-2xl md:text-5xl font-bold text-white">Expertise</h2>
+          <div className="mt-4 w-12 md:w-16 h-1 bg-gradient-to-r from-purple-500 to-violet-500 mx-auto rounded-full" />
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
           {skills.map((s) => (
             <div
               key={s.category}
-              className="group relative bg-white/5 border border-white/10 rounded-2xl p-5 md:p-7 hover:border-purple-500/40 hover:bg-white/[0.07] transition-all duration-300 overflow-hidden"
+              className="group relative bg-white/5 border border-white/10 rounded-2xl p-4 md:p-7 hover:border-purple-500/40 hover:bg-white/[0.07] transition-all duration-300 overflow-hidden"
             >
               {/* Glow on hover */}
               <div className="absolute inset-0 bg-gradient-to-br from-purple-600/0 to-violet-600/0 group-hover:from-purple-600/10 group-hover:to-violet-600/5 transition-all duration-500 rounded-2xl" />
@@ -66,7 +66,7 @@ export default function ExpertiseSection() {
             { value: "100%", label: "Dedication" },
           ].map((stat) => (
             <div key={stat.label} className="text-center p-6 rounded-2xl bg-white/5 border border-white/10">
-              <div className="text-3xl font-extrabold bg-gradient-to-r from-purple-400 to-violet-400 bg-clip-text text-transparent">
+              <div className="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-purple-400 to-violet-400 bg-clip-text text-transparent">
                 {stat.value}
               </div>
               <div className="text-gray-500 text-sm mt-1">{stat.label}</div>

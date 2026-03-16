@@ -31,18 +31,18 @@ export default function ExpertiseSection() {
           <div className="mt-4 w-12 md:w-16 h-1 bg-gradient-to-r from-purple-500 to-violet-500 mx-auto rounded-full" />
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
-          {skills.map((s) => (
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+          {skills.map((s, i) => (
             <div
               key={s.category}
-              className="group relative bg-white/5 border border-white/10 rounded-2xl p-4 md:p-7 hover:border-purple-500/40 hover:bg-white/[0.07] transition-all duration-300 overflow-hidden"
+              className={`group relative bg-white/5 border border-white/10 rounded-2xl p-3 md:p-7 hover:border-purple-500/40 hover:bg-white/[0.07] transition-all duration-300 overflow-hidden ${i === 2 ? 'col-span-2 md:col-span-1' : ''}`}
             >
               {/* Glow on hover */}
               <div className="absolute inset-0 bg-gradient-to-br from-purple-600/0 to-violet-600/0 group-hover:from-purple-600/10 group-hover:to-violet-600/5 transition-all duration-500 rounded-2xl" />
 
               <div className="relative z-10">
-                <div className="text-3xl mb-4">{s.icon}</div>
-                <h3 className="text-lg font-bold text-white mb-5">{s.category}</h3>
+                <div className="text-2xl md:text-3xl mb-3 md:mb-4">{s.icon}</div>
+                <h3 className="text-base md:text-lg font-bold text-white mb-4 md:mb-5">{s.category}</h3>
                 <div className="flex flex-wrap gap-2">
                   {s.items.map((item) => (
                     <span

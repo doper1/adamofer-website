@@ -56,20 +56,20 @@ export default function CertificatesSection() {
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {certificates.map((cert) => (
             <a
               key={cert.title}
               href={cert.credlyUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative bg-white/5 border border-white/10 rounded-2xl p-4 md:p-6 hover:border-purple-500/40 hover:bg-white/[0.07] transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-purple-900/20 flex flex-col items-center text-center cursor-pointer"
+              className="group relative bg-white/5 border border-white/10 rounded-2xl p-3 md:p-6 hover:border-purple-500/40 hover:bg-white/[0.07] transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-purple-900/20 flex flex-col items-center text-center cursor-pointer"
             >
               {/* Top gradient accent */}
               <div className={`absolute top-0 left-0 right-0 h-1 rounded-t-2xl bg-gradient-to-r ${cert.color}`} />
 
               {/* Badge or icon */}
-              <div className="mt-2 mb-4 w-16 h-16 md:w-20 md:h-20 flex items-center justify-center">
+              <div className="mt-1 mb-3 w-14 h-14 md:w-20 md:h-20 flex items-center justify-center">
                 {cert.badge ? (
                   <img
                     src={cert.badge}
@@ -84,7 +84,7 @@ export default function CertificatesSection() {
                   />
                 ) : null}
                 <div
-                  className={`text-3xl md:text-4xl w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br ${cert.color} flex items-center justify-center ${cert.badge ? 'hidden' : 'flex'}`}
+                  className={`text-2xl md:text-4xl w-14 h-14 md:w-20 md:h-20 rounded-full bg-gradient-to-br ${cert.color} flex items-center justify-center ${cert.badge ? 'hidden' : 'flex'}`}
                   style={{ display: cert.badge ? 'none' : 'flex' }}
                 >
                   {cert.icon}
@@ -99,7 +99,7 @@ export default function CertificatesSection() {
                 {cert.title}
               </h3>
 
-              <p className="text-gray-600 text-xs">{cert.issuer}</p>
+              <p className="text-[10px] md:text-xs text-gray-600">{cert.issuer}</p>
 
               <div className="mt-4 flex items-center gap-1 text-gray-600 text-xs">
                 <span>🗓</span> {cert.date}

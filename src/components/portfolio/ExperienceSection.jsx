@@ -39,9 +39,9 @@ export default function ExperienceSection() {
           <div className="mt-4 w-12 md:w-16 h-1 bg-gradient-to-r from-purple-500 to-violet-500 mx-auto rounded-full" />
         </div>
 
-        <div className="space-y-8">
+        <div className="space-y-4 md:space-y-8">
           {experiences.map((exp, i) => (
-            <div key={exp.role} className={`flex gap-6 items-start ${i % 2 === 0 ? "md:flex-row flex-col" : "md:flex-row-reverse flex-col"}`}>
+            <div key={exp.role} className={`flex gap-3 md:gap-6 items-start ${i % 2 === 0 ? "md:flex-row flex-col" : "md:flex-row-reverse flex-col"}`}>
               <div className={`flex-1 bg-white/5 border border-white/10 rounded-2xl p-4 md:p-6 hover:border-purple-500/40 hover:bg-white/[0.07] transition-all duration-300 w-full ${i % 2 === 0 ? "md:mr-8" : "md:ml-8"}`}>
                 <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
                   <div>

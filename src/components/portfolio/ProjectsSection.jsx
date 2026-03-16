@@ -51,7 +51,7 @@ const projects = [
 
 export default function ProjectsSection() {
   return (
-    <section id="projects" className="py-24 px-6 relative">
+    <section id="projects" className="py-16 md:py-24 px-4 md:px-8 relative">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-950/10 to-transparent pointer-events-none" />
 
       <div className="max-w-6xl mx-auto">
@@ -70,7 +70,7 @@ export default function ProjectsSection() {
               {/* Top gradient bar */}
               <div className={`h-1 w-full bg-gradient-to-r ${p.gradient}`} />
 
-              <div className="p-6">
+              <div className="p-5 md:p-6">
                 <div className="flex items-start justify-between mb-4">
                   <span className="text-3xl">{p.icon}</span>
                   <a

@@ -31,9 +31,7 @@ const experiences = [
 
 export default function ExperienceSection() {
   return (
-    <section id="experience" className="py-24 px-6 relative overflow-hidden">
-      <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-purple-500/30 to-transparent hidden md:block" />
-
+    <section id="experience" className="py-16 md:py-24 px-4 md:px-8 relative overflow-hidden">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-16">
           <p className="text-purple-400 text-sm uppercase tracking-[0.3em] font-medium mb-3">My Journey</p>
@@ -43,13 +41,8 @@ export default function ExperienceSection() {
 
         <div className="space-y-8">
           {experiences.map((exp, i) => (
-            <div key={exp.role} className={`flex gap-6 items-start ${i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}>
-              {/* Dot + line */}
-              <div className="hidden md:flex flex-col items-center flex-shrink-0 w-8 pt-2">
-                <div className="w-3 h-3 rounded-full bg-gradient-to-r from-purple-500 to-violet-500 ring-4 ring-purple-500/20 flex-shrink-0" />
-              </div>
-
-              <div className={`flex-1 bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-purple-500/40 hover:bg-white/[0.07] transition-all duration-300 ${i % 2 === 0 ? "md:mr-8" : "md:ml-8"}`}>
+            <div key={exp.role} className={`flex gap-6 items-start ${i % 2 === 0 ? "md:flex-row flex-col" : "md:flex-row-reverse flex-col"}`}>
+              <div className={`flex-1 bg-white/5 border border-white/10 rounded-2xl p-5 md:p-6 hover:border-purple-500/40 hover:bg-white/[0.07] transition-all duration-300 w-full ${i % 2 === 0 ? "md:mr-8" : "md:ml-8"}`}>
                 <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
                   <div>
                     <h3 className="text-lg font-bold text-white">{exp.role}</h3>

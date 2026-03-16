@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 
 export default function HeroSection() {
   const canvasRef = useRef(null);
+  const mouseRef = useRef({ x: null, y: null });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -17,7 +18,21 @@ export default function HeroSection() {
     resize();
     window.addEventListener("resize", resize);
 
-    for (let i = 0; i < 80; i++) {
+    const handleMouseMove = (e) => {
+      const rect = canvas.getBoundingClientRect();
+      mouseRef.current.x = e.clientX - rect.left;
+      mouseRef.current.y = e.clientY - rect.top;
+    };
+
+    const handleMouseLeave = () => {
+      mouseRef.current.x = null;
+      mouseRef.current.y = null;
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseout", handleMouseLeave);
+
+    for (let i = 0; i < 400; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
@@ -35,10 +50,27 @@ export default function HeroSection() {
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(167, 139, 250, ${p.o})`;
         ctx.fill();
+
+        if (mouseRef.current.x !== null && mouseRef.current.y !== null) {
+          const dx = mouseRef.current.x - p.x;
+          const dy = mouseRef.current.y - p.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          const maxDistance = 150;
+
+          if (distance < maxDistance) {
+            const force = (maxDistance - distance) / maxDistance;
+            p.x -= (dx / distance) * force * 2;
+            p.y -= (dy / distance) * force * 2;
+          }
+        }
+
         p.x += p.dx;
         p.y += p.dy;
-        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+        
+        if (p.x < 0 && p.dx < 0) p.dx *= -1;
+        if (p.x > canvas.width && p.dx > 0) p.dx *= -1;
+        if (p.y < 0 && p.dy < 0) p.dy *= -1;
+        if (p.y > canvas.height && p.dy > 0) p.dy *= -1;
       });
       animFrame = requestAnimationFrame(draw);
     };
@@ -47,36 +79,32 @@ export default function HeroSection() {
     return () => {
       cancelAnimationFrame(animFrame);
       window.removeEventListener("resize", resize);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseout", handleMouseLeave);
     };
   }, []);
 
   return (
-    <section id="about" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section id="about" className="relative min-h-[110vh] flex items-center justify-center overflow-hidden">
       {/* Animated canvas background */}
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
+      <canvas ref={canvasRef} className="absolute top-0 left-0 w-full h-[120%]" />
 
       {/* Gradient blobs */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-700/20 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-violet-600/15 rounded-full blur-[100px] pointer-events-none" />
 
       {/* Grid overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
+      <div className="absolute inset-0 h-[120%] bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
 
-      <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
-        {/* Badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-300 text-sm mb-8">
-          <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
-          Available for opportunities
-        </div>
-
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-6 leading-none">
+      <div className="relative z-10 text-center px-4 md:px-8 max-w-4xl mx-auto">
+        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-6 leading-none">
           <span className="text-white">Adam</span>{" "}
           <span className="bg-gradient-to-r from-purple-400 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
             Ofer
           </span>
         </h1>
 
-        <p className="text-xl md:text-2xl text-gray-400 font-light mb-4 tracking-wide">
+        <p className="text-lg md:text-xl text-gray-400 font-light mb-4 tracking-wide">
           DevOps Engineer &amp; Software Developer
         </p>
 
@@ -101,7 +129,7 @@ export default function HeroSection() {
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-600 text-xs">
+        <div className="mt-16 flex flex-col items-center gap-2 text-gray-600 text-xs">
           <span className="tracking-widest uppercase">Scroll</span>
           <div className="w-px h-12 bg-gradient-to-b from-purple-500/50 to-transparent animate-pulse" />
         </div>

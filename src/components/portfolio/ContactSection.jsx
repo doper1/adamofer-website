@@ -15,7 +15,7 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-24 px-6 relative overflow-hidden">
+    <section id="contact" className="py-16 md:py-24 px-4 md:px-8 relative overflow-hidden">
       {/* Background blob */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-purple-700/10 rounded-full blur-[120px] pointer-events-none" />
 
@@ -37,7 +37,7 @@ export default function ContactSection() {
             <button onClick={() => setStatus(null)} className="mt-6 text-purple-400 hover:text-purple-300 text-sm underline">Send another</button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="bg-white/5 border border-white/10 rounded-3xl p-8 md:p-10 space-y-6">
+          <form onSubmit={handleSubmit} className="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-10 space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm text-gray-400 mb-2 font-medium">Your Name</label>

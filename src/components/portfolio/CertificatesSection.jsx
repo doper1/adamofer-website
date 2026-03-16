@@ -43,7 +43,7 @@ const certificates = [
 
 export default function CertificatesSection() {
   return (
-    <section id="certificates" className="py-24 px-6 relative overflow-hidden">
+    <section id="certifications" className="py-16 md:py-24 px-4 md:px-8 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-950/10 to-transparent pointer-events-none" />
 
       <div className="max-w-6xl mx-auto">
@@ -75,7 +75,12 @@ export default function CertificatesSection() {
                     src={cert.badge}
                     alt={cert.title}
                     className="w-full h-full object-contain drop-shadow-lg transition-transform duration-300 group-hover:scale-110"
-                    onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
+                    onError={(e) => { 
+                      const target = e.currentTarget;
+                      target.style.display = 'none'; 
+                      const sibling = target.nextSibling;
+                      if (sibling instanceof HTMLElement) sibling.style.display = 'flex'; 
+                    }}
                   />
                 ) : null}
                 <div

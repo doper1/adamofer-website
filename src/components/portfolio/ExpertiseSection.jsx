@@ -21,7 +21,7 @@ const skills = [
 
 export default function ExpertiseSection() {
   return (
-    <section id="expertise" className="py-24 px-6 relative overflow-hidden">
+    <section id="expertise" className="py-16 md:py-24 px-4 md:px-8 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-950/10 to-transparent pointer-events-none" />
 
       <div className="max-w-6xl mx-auto">
@@ -35,7 +35,7 @@ export default function ExpertiseSection() {
           {skills.map((s) => (
             <div
               key={s.category}
-              className="group relative bg-white/5 border border-white/10 rounded-2xl p-7 hover:border-purple-500/40 hover:bg-white/[0.07] transition-all duration-300 overflow-hidden"
+              className="group relative bg-white/5 border border-white/10 rounded-2xl p-5 md:p-7 hover:border-purple-500/40 hover:bg-white/[0.07] transition-all duration-300 overflow-hidden"
             >
               {/* Glow on hover */}
               <div className="absolute inset-0 bg-gradient-to-br from-purple-600/0 to-violet-600/0 group-hover:from-purple-600/10 group-hover:to-violet-600/5 transition-all duration-500 rounded-2xl" />
@@ -59,10 +59,9 @@ export default function ExpertiseSection() {
         </div>
 
         {/* Stats row */}
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="mt-16 grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
           {[
             { value: "5+", label: "Years Experience" },
-            { value: "20+", label: "Projects Shipped" },
             { value: "10+", label: "Technologies" },
             { value: "100%", label: "Dedication" },
           ].map((stat) => (

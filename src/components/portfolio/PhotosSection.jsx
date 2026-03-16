@@ -23,7 +23,7 @@ const photos = [
 
 export default function PhotosSection() {
   return (
-    <section className="py-24 px-6">
+    <section id="photos" className="py-16 md:py-24 px-4 md:px-8">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <p className="text-purple-400 text-sm uppercase tracking-[0.3em] font-medium mb-3">Beyond the Screen</p>
@@ -35,19 +35,23 @@ export default function PhotosSection() {
           {photos.map((photo, i) => (
             <div
               key={photo.label}
-              className={`group relative overflow-hidden rounded-2xl ${i === 0 ? "md:row-span-2" : ""}`}
-              style={{ aspectRatio: i === 0 ? "unset" : "1/1", minHeight: i === 0 ? "420px" : "auto" }}
+              className={`group relative overflow-hidden rounded-2xl ${i === 0 ? "md:row-span-2 col-span-2 md:col-span-1" : i === 3 ? "col-span-2 md:col-span-1" : ""}`}
+              style={{ aspectRatio: i === 0 ? "1/1" : "1/1", minHeight: "auto" }}
             >
               <img
                 src={photo.url}
                 alt={photo.caption}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                style={{ height: i === 0 ? "100%" : "200px" }}
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  target.style.display = 'none';
+                  const sibling = target.nextSibling; // This is the overlay div
+                  if (sibling instanceof HTMLElement) sibling.style.display = 'flex'; // Show the overlay as a fallback
+                }}
               />
               {/* Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                <span className="text-xs text-purple-300 font-medium uppercase tracking-wider">{photo.label}</span>
                 <p className="text-white text-sm font-medium mt-0.5">{photo.caption}</p>
               </div>
               {/* Label badge always visible */}

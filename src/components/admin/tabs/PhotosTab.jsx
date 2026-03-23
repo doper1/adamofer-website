@@ -1,28 +1,44 @@
 "use client";
-import { useState } from "react";
-
-const INITIAL_PHOTOS = [
-  { id: 1, url: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400", caption: "Coding session", category: "Work" },
-  { id: 2, url: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400", caption: "Matrix code", category: "Tech" },
-  { id: 3, url: "https://images.unsplash.com/photo-1595675024853-0f3ec9098ac6?w=400", caption: "Cloud infrastructure", category: "Work" },
-];
+import { useState, useEffect } from "react";
+import { getPhotos, createPhoto, deletePhoto } from "@/app/actions";
 
 const BLANK = { url: "", caption: "", category: "Work" };
 const inputCls = "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all text-sm";
 const labelCls = "block text-xs text-gray-400 mb-1 font-medium";
 
 export default function PhotosTab() {
-  const [photos, setPhotos] = useState(INITIAL_PHOTOS);
+  const [photos, setPhotos] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
   const [form, setForm] = useState(BLANK);
 
-  const save = () => {
+  const fetchData = async () => {
+    setLoading(true);
+    const res = await getPhotos();
+    if (res.success) setPhotos(res.data);
+    setLoading(false);
+  };
+
+  useEffect(() => { fetchData(); }, []);
+
+  const save = async () => {
     if (!form.url.trim()) return;
-    setPhotos([...photos, { ...form, id: Date.now() }]);
+    setLoading(true);
+    await createPhoto(form);
     setForm(BLANK);
     setAdding(false);
+    await fetchData();
   };
-  const remove = (id) => setPhotos(photos.filter((p) => p.id !== id));
+
+  const remove = async (id) => {
+    setLoading(true);
+    await deletePhoto(id);
+    await fetchData();
+  };
+
+  if (loading && photos.length === 0) {
+    return <div className="text-center py-12 text-gray-400">Loading photos...</div>;
+  }
 
   return (
     <div className="space-y-4">

@@ -1,9 +1,16 @@
 "use client";
 import { useEffect, useRef } from "react";
 
-export default function HeroSection() {
+export default function HeroSection({ name, subtitle, description }) {
   const canvasRef = useRef(null);
   const mouseRef = useRef({ x: null, y: null });
+
+  const displayName = name || "Adam Ofer";
+  const nameParts = displayName.split(" ");
+  const firstName = nameParts[0] || "Adam";
+  const lastName = nameParts.slice(1).join(" ") || "Ofer";
+  const displaySubtitle = subtitle || "DevOps Engineer & Software Developer";
+  const displayDescription = description || "Building robust infrastructure, elegant code, and scalable systems. Based in Israel — passionate about automation, clean architecture, and performance.";
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -98,19 +105,18 @@ export default function HeroSection() {
 
       <div className="relative z-10 text-center px-4 md:px-8 max-w-4xl mx-auto">
         <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-6 leading-none">
-          <span className="text-white">Adam</span>{" "}
+          <span className="text-white">{firstName}</span>{" "}
           <span className="bg-gradient-to-r from-purple-400 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
-            Ofer
+            {lastName}
           </span>
         </h1>
 
         <p className="text-base md:text-xl text-gray-400 font-light mb-4 tracking-wide">
-          DevOps Engineer &amp; Software Developer
+          {displaySubtitle}
         </p>
 
         <p className="text-gray-500 text-base md:text-lg max-w-2xl mx-auto mb-12 leading-relaxed">
-          Building robust infrastructure, elegant code, and scalable systems.
-          Based in <span className="text-purple-400">Israel</span> — passionate about automation, clean architecture, and performance.
+          {displayDescription}
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">

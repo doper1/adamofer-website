@@ -1,47 +1,18 @@
-const certificates = [
-  {
-    title: "AWS Certified Solutions Architect",
-    issuer: "Amazon Web Services",
-    date: "2024",
-    level: "Associate",
-    icon: "☁️",
-    color: "from-orange-500 to-amber-600",
-    badge: "https://images.credly.com/size/340x340/images/0e284c3f-5164-4b21-8660-0d84737941bc/image.png",
-    credlyUrl: "#",
-  },
-  {
-    title: "Certified Kubernetes Administrator",
-    issuer: "Cloud Native Computing Foundation",
-    date: "2024",
-    level: "Professional",
-    icon: "⚙️",
-    color: "from-blue-500 to-cyan-600",
-    badge: "https://images.credly.com/size/340x340/images/8b8ed108-e77d-4396-ac59-2504583b9d54/cka_from_cncfsite__281_29.png",
-    credlyUrl: "#",
-  },
-  {
-    title: "AWS Certified DevOps Engineer",
-    issuer: "Amazon Web Services",
-    date: "2023",
-    level: "Professional",
-    icon: "🔧",
-    color: "from-orange-600 to-red-600",
-    badge: "https://images.credly.com/size/340x340/images/bd31ef42-d460-493e-8503-39592aaf0458/image.png",
-    credlyUrl: "#",
-  },
-  {
-    title: "Terraform Associate",
-    issuer: "HashiCorp",
-    date: "2023",
-    level: "Associate",
-    icon: "🏗️",
-    color: "from-purple-500 to-violet-600",
-    badge: null,
-    credlyUrl: "#",
-  },
-];
+import { getCertificates } from "@/app/actions";
 
-export default function CertificatesSection() {
+export default async function CertificatesSection() {
+  let certificateList = [];
+  try {
+    const result = await getCertificates();
+    if (result.success) {
+      certificateList = result.data;
+    }
+  } catch (error) {
+    console.error("Failed to load certificates:", error);
+  }
+
+  if (certificateList.length === 0) return null;
+
   return (
     <section id="certifications" className="py-12 md:py-24 px-4 md:px-8 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-950/10 to-transparent pointer-events-none" />
@@ -56,44 +27,32 @@ export default function CertificatesSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-          {certificates.map((cert) => (
+        <div className="flex flex-wrap justify-center gap-4 md:gap-6">
+          {certificateList.map((cert) => (
             <a
-              key={cert.title}
-              href={cert.credlyUrl}
+              key={cert.id}
+              href={cert.credentialUrl || "#"}
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative bg-white/5 border border-white/10 rounded-2xl p-3 md:p-6 hover:border-purple-500/40 hover:bg-white/[0.07] transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-purple-900/20 flex flex-col items-center text-center cursor-pointer"
+              className="group relative bg-white/5 border border-white/10 rounded-2xl p-3 md:p-6 hover:border-purple-500/40 hover:bg-white/[0.07] transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-purple-900/20 flex flex-col items-center text-center cursor-pointer w-[calc(50%-0.5rem)] lg:w-[calc(25%-1.125rem)]"
             >
-              {/* Top gradient accent */}
-              <div className={`absolute top-0 left-0 right-0 h-1 rounded-t-2xl bg-gradient-to-r ${cert.color}`} />
 
-              {/* Badge or icon */}
+              {/* Badge image */}
               <div className="mt-1 mb-3 w-14 h-14 md:w-20 md:h-20 flex items-center justify-center">
-                {cert.badge ? (
+                {cert.badgeUrl ? (
                   <img
-                    src={cert.badge}
+                    src={cert.badgeUrl}
                     alt={cert.title}
                     className="w-full h-full object-contain drop-shadow-lg transition-transform duration-300 group-hover:scale-110"
-                    onError={(e) => { 
-                      const target = e.currentTarget;
-                      target.style.display = 'none'; 
-                      const sibling = target.nextSibling;
-                      if (sibling instanceof HTMLElement) sibling.style.display = 'flex'; 
-                    }}
                   />
-                ) : null}
-                <div
-                  className={`text-2xl md:text-4xl w-14 h-14 md:w-20 md:h-20 rounded-full bg-gradient-to-br ${cert.color} flex items-center justify-center ${cert.badge ? 'hidden' : 'flex'}`}
-                  style={{ display: cert.badge ? 'none' : 'flex' }}
-                >
-                  {cert.icon}
-                </div>
+                ) : (
+                  <div
+                    className={`w-14 h-14 md:w-20 md:h-20 rounded-full bg-gradient-to-br ${cert.color} flex items-center justify-center`}
+                  >
+                    <span className="text-white text-lg md:text-2xl font-bold">{cert.title?.[0] || "?"}</span>
+                  </div>
+                )}
               </div>
-
-              <span className={`text-xs font-semibold px-3 py-1 rounded-full bg-gradient-to-r ${cert.color} text-white mb-3`}>
-                {cert.level}
-              </span>
 
               <h3 className="text-xs md:text-sm font-bold text-white leading-snug mb-2 group-hover:text-purple-300 transition-colors">
                 {cert.title}

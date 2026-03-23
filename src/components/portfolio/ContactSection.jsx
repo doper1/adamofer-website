@@ -2,9 +2,19 @@
 import { useState } from "react";
 import { submitContactForm } from "@/app/actions";
 
-export default function ContactSection() {
+export default function ContactSection({ githubUrl, linkedinUrl, publicEmail }) {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState(null); // "sending" | "sent" | "error"
+
+  const displayGithubUrl = githubUrl || "#";
+  const displayLinkedinUrl = linkedinUrl || "#";
+  const displayEmail = publicEmail || "adam@example.com";
+
+  const socialLinks = [
+    { label: "GitHub", href: displayGithubUrl, icon: "🐙" },
+    { label: "LinkedIn", href: displayLinkedinUrl, icon: "💼" },
+    { label: "Email", href: `mailto:${displayEmail}`, icon: "✉️" },
+  ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -86,11 +96,7 @@ export default function ContactSection() {
 
         {/* Social links */}
         <div className="flex justify-center gap-6 mt-10">
-          {[
-            { label: "GitHub", href: "#", icon: "🐙" },
-            { label: "LinkedIn", href: "#", icon: "💼" },
-            { label: "Email", href: "mailto:adam@example.com", icon: "✉️" },
-          ].map((s) => (
+          {socialLinks.map((s) => (
             <a
               key={s.label}
               href={s.href}

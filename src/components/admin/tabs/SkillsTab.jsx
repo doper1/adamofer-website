@@ -1,21 +1,36 @@
 "use client";
-import { useState } from "react";
-
-const INITIAL = [
-  { id: 1, category: "DevOps & Cloud", icon: "☁️", items: ["Docker", "Kubernetes", "Terraform", "AWS", "CI/CD", "Ansible", "Jenkins", "Helm"] },
-  { id: 2, category: "Programming", icon: "💻", items: ["Python", "JavaScript", "TypeScript", "Bash", "Go", "Node.js", "React", "REST APIs"] },
-  { id: 3, category: "Infrastructure", icon: "🔧", items: ["Linux", "Nginx", "Redis", "PostgreSQL", "Monitoring", "Logging", "Networking", "Security"] },
-];
+import { useState, useEffect } from "react";
+import {
+  getSkillGroups,
+  createSkillGroup,
+  updateSkillGroup,
+  deleteSkillGroup,
+} from "@/app/actions";
 
 const inputCls = "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all text-sm";
 const labelCls = "block text-xs text-gray-400 mb-1 font-medium";
 const BLANK = { category: "", icon: "🛠️", items: [] };
 
 export default function SkillsTab() {
-  const [groups, setGroups] = useState(INITIAL);
+  const [groups, setGroups] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(BLANK);
   const [newSkill, setNewSkill] = useState("");
+
+  const fetchData = async () => {
+    setLoading(true);
+    const res = await getSkillGroups();
+    if (res.success) {
+      setGroups(res.data.map((g) => ({
+        ...g,
+        items: g.skills.map((s) => s.name),
+      })));
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => { fetchData(); }, []);
 
   const openEdit = (g) => { setEditing(g.id); setForm({ ...g }); };
   const openNew = () => { setEditing("new"); setForm(BLANK); };
@@ -28,12 +43,33 @@ export default function SkillsTab() {
   };
   const removeSkill = (idx) => setForm({ ...form, items: form.items.filter((_, i) => i !== idx) });
 
-  const save = () => {
-    if (editing === "new") setGroups([...groups, { ...form, id: Date.now() }]);
-    else setGroups(groups.map((g) => (g.id === editing ? { ...form, id: editing } : g)));
+  const save = async () => {
+    setLoading(true);
+    const data = {
+      category: form.category,
+      icon: form.icon,
+      color: form.color,
+      displayOrder: form.displayOrder,
+      skills: form.items.map((name) => ({ name })),
+    };
+    if (editing === "new") {
+      await createSkillGroup(data);
+    } else {
+      await updateSkillGroup(editing, data);
+    }
     cancel();
+    await fetchData();
   };
-  const remove = (id) => setGroups(groups.filter((g) => g.id !== id));
+
+  const remove = async (id) => {
+    setLoading(true);
+    await deleteSkillGroup(id);
+    await fetchData();
+  };
+
+  if (loading && groups.length === 0) {
+    return <div className="text-center py-12 text-gray-400">Loading skills...</div>;
+  }
 
   return (
     <div className="space-y-4">

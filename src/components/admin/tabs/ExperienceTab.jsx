@@ -1,22 +1,36 @@
 "use client";
-import { useState } from "react";
-
-const INITIAL = [
-  { id: 1, role: "Senior DevOps Engineer", company: "Tech Company", period: "2023 – Present", description: "Leading cloud infrastructure initiatives, designing CI/CD pipelines, and championing DevOps culture across engineering teams.", highlights: ["Reduced deployment time by 60%", "Managed 50+ microservices on Kubernetes", "Led team of 4 engineers"] },
-  { id: 2, role: "DevOps Engineer", company: "Software Startup", period: "2021 – 2023", description: "Built and maintained AWS infrastructure using Terraform and Ansible. Implemented monitoring solutions and automated operational tasks.", highlights: ["99.9% uptime SLA", "Full IaC migration to Terraform", "Deployed ELK observability stack"] },
-  { id: 3, role: "Backend Developer", company: "Development Agency", period: "2019 – 2021", description: "Developed RESTful APIs and backend services in Python and Node.js.", highlights: ["Shipped 10+ production APIs", "Python & Node.js", "PostgreSQL & Redis"] },
-  { id: 4, role: "Junior Developer", company: "First Employer", period: "2018 – 2019", description: "Started professional career writing scripts, automating workflows, and supporting internal tools.", highlights: ["Linux administration", "Bash & Python scripting", "Networking fundamentals"] },
-];
+import { useState, useEffect } from "react";
+import {
+  getExperiences,
+  createExperience,
+  updateExperience,
+  deleteExperience,
+} from "@/app/actions";
 
 const BLANK = { role: "", company: "", period: "", description: "", highlights: [] };
 const inputCls = "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all text-sm";
 const labelCls = "block text-xs text-gray-400 mb-1 font-medium";
 
 export default function ExperienceTab() {
-  const [items, setItems] = useState(INITIAL);
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(BLANK);
   const [newHL, setNewHL] = useState("");
+
+  const fetchData = async () => {
+    setLoading(true);
+    const res = await getExperiences();
+    if (res.success) {
+      setItems(res.data.map((exp) => ({
+        ...exp,
+        highlights: exp.highlights.map((h) => h.highlight),
+      })));
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => { fetchData(); }, []);
 
   const openEdit = (item) => { setEditing(item.id); setForm({ ...item }); };
   const openNew = () => { setEditing("new"); setForm(BLANK); };
@@ -25,12 +39,34 @@ export default function ExperienceTab() {
   const addHL = () => { if (!newHL.trim()) return; setForm({ ...form, highlights: [...form.highlights, newHL.trim()] }); setNewHL(""); };
   const removeHL = (i) => setForm({ ...form, highlights: form.highlights.filter((_, idx) => idx !== i) });
 
-  const save = () => {
-    if (editing === "new") setItems([...items, { ...form, id: Date.now() }]);
-    else setItems(items.map((i) => (i.id === editing ? { ...form, id: editing } : i)));
+  const save = async () => {
+    setLoading(true);
+    const data = {
+      role: form.role,
+      company: form.company,
+      period: form.period,
+      description: form.description,
+      displayOrder: form.displayOrder,
+      highlights: form.highlights.map((highlight) => ({ highlight })),
+    };
+    if (editing === "new") {
+      await createExperience(data);
+    } else {
+      await updateExperience(editing, data);
+    }
     cancel();
+    await fetchData();
   };
-  const remove = (id) => setItems(items.filter((i) => i.id !== id));
+
+  const remove = async (id) => {
+    setLoading(true);
+    await deleteExperience(id);
+    await fetchData();
+  };
+
+  if (loading && items.length === 0) {
+    return <div className="text-center py-12 text-gray-400">Loading experience...</div>;
+  }
 
   return (
     <div className="space-y-4">

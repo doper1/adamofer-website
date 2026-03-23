@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useUser, SignOutButton } from "@clerk/nextjs";
+import { useUser, useAuth } from "@clerk/nextjs";
 import {
   BarChart2,
   Settings,
@@ -16,6 +17,8 @@ import {
 
 export default function AdminLayout({ children, currentTab, setCurrentTab }) {
   const { user } = useUser();
+  const { signOut } = useAuth();
+  const router = useRouter();
   
   const tabs = [
     { id: "stats", label: "Stats", icon: BarChart2 },
@@ -45,11 +48,14 @@ export default function AdminLayout({ children, currentTab, setCurrentTab }) {
             <Link href="/" className="text-gray-400 hover:text-white text-sm flex items-center gap-1 border border-white/10 rounded-full px-3 py-1 hover:bg-white/5 transition-colors">
               <ArrowLeft className="w-4 h-4" /> Site
             </Link>
-            <SignOutButton>
-              <button className="text-gray-400 hover:text-white text-sm flex items-center gap-1 transition-colors">
-                 Logout
-              </button>
-            </SignOutButton>
+            <button
+              onClick={async () => {
+                await signOut({ redirectUrl: "/" });
+              }}
+              className="text-gray-400 hover:text-white text-sm flex items-center gap-1 transition-colors"
+            >
+              <LogOut className="w-4 h-4" /> Logout
+            </button>
           </div>
         </div>
       </header>

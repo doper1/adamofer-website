@@ -1,55 +1,21 @@
-const projects = [
-  {
-    title: "K8s Auto-Scaler",
-    description: "Built a custom Kubernetes horizontal pod autoscaler with ML-based prediction to proactively scale workloads before traffic spikes.",
-    tags: ["Kubernetes", "Python", "Prometheus", "Go"],
-    gradient: "from-purple-600 to-violet-700",
-    icon: "⚡",
-    link: "#",
-  },
-  {
-    title: "CI/CD Pipeline Framework",
-    description: "Designed a reusable GitOps CI/CD framework using Jenkins and ArgoCD, cutting deployment time by 60% across 10+ microservices.",
-    tags: ["Jenkins", "ArgoCD", "Docker", "Bash"],
-    gradient: "from-violet-600 to-fuchsia-700",
-    icon: "🔄",
-    link: "#",
-  },
-  {
-    title: "Infrastructure as Code Suite",
-    description: "Provisioned entire cloud infrastructure on AWS using Terraform modules, supporting multi-environment deployments with zero downtime.",
-    tags: ["Terraform", "AWS", "Ansible", "Python"],
-    gradient: "from-fuchsia-600 to-purple-700",
-    icon: "🏗️",
-    link: "#",
-  },
-  {
-    title: "Observability Platform",
-    description: "Deployed a full-stack monitoring and alerting platform (Prometheus + Grafana + Loki) enabling real-time visibility across all services.",
-    tags: ["Prometheus", "Grafana", "Loki", "Helm"],
-    gradient: "from-purple-700 to-violet-600",
-    icon: "📊",
-    link: "#",
-  },
-  {
-    title: "Full-Stack Web App",
-    description: "Developed a production-ready web application with React frontend and Node.js backend, containerized and deployed on AWS ECS.",
-    tags: ["React", "Node.js", "AWS ECS", "PostgreSQL"],
-    gradient: "from-violet-700 to-fuchsia-600",
-    icon: "🌐",
-    link: "#",
-  },
-  {
-    title: "Security Automation",
-    description: "Automated vulnerability scanning and compliance checks across infrastructure using custom scripts and integrated security tooling.",
-    tags: ["Python", "Bash", "Trivy", "Snyk"],
-    gradient: "from-fuchsia-700 to-purple-600",
-    icon: "🔐",
-    link: "#",
-  },
-];
+import { getProjects } from "@/app/actions";
 
-export default function ProjectsSection() {
+export default async function ProjectsSection() {
+  let projectList = [];
+  try {
+    const result = await getProjects();
+    if (result.success) {
+      projectList = result.data.map((project) => ({
+        ...project,
+        tags: project.tags ? project.tags.map((t) => t.tag) : [],
+      }));
+    }
+  } catch (error) {
+    console.error("Failed to load projects:", error);
+  }
+
+  if (projectList.length === 0) return null;
+
   return (
     <section id="projects" className="py-12 md:py-24 px-4 md:px-8 relative">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-950/10 to-transparent pointer-events-none" />
@@ -62,9 +28,9 @@ export default function ProjectsSection() {
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {projects.map((p) => (
+          {projectList.map((p) => (
             <div
-              key={p.title}
+              key={p.id}
               className="group relative bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-purple-500/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-purple-900/20"
             >
               {/* Top gradient bar */}

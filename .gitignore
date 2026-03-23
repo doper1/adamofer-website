@@ -40,3 +40,4 @@ dist-ssr/
 
 # Drizzle generated migrations (optional: remove if you want to commit migrations)
 # /drizzle/
+.kiro

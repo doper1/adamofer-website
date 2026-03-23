@@ -1,25 +1,21 @@
-const skills = [
-  {
-    category: "DevOps & Cloud",
-    icon: "☁️",
-    items: ["Docker", "Kubernetes", "Terraform", "AWS", "CI/CD", "Ansible", "Jenkins", "Helm"],
-    color: "from-purple-500 to-violet-600",
-  },
-  {
-    category: "Programming",
-    icon: "💻",
-    items: ["Python", "JavaScript", "TypeScript", "Bash", "Go", "Node.js", "React", "REST APIs"],
-    color: "from-violet-500 to-fuchsia-600",
-  },
-  {
-    category: "Infrastructure",
-    icon: "🔧",
-    items: ["Linux", "Nginx", "Redis", "PostgreSQL", "Monitoring", "Logging", "Networking", "Security"],
-    color: "from-fuchsia-500 to-purple-600",
-  },
-];
+import { getSkillGroups } from "@/app/actions";
 
-export default function ExpertiseSection() {
+export default async function ExpertiseSection() {
+  let skillGroupList = [];
+  try {
+    const result = await getSkillGroups();
+    if (result.success) {
+      skillGroupList = result.data.map((group) => ({
+        ...group,
+        items: group.skills ? group.skills.map((s) => s.name) : [],
+      }));
+    }
+  } catch (error) {
+    console.error("Failed to load skill groups:", error);
+  }
+
+  if (skillGroupList.length === 0) return null;
+
   return (
     <section id="expertise" className="py-12 md:py-24 px-4 md:px-8 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-950/10 to-transparent pointer-events-none" />
@@ -32,10 +28,10 @@ export default function ExpertiseSection() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-          {skills.map((s, i) => (
+          {skillGroupList.map((s, i) => (
             <div
-              key={s.category}
-              className={`group relative bg-white/5 border border-white/10 rounded-2xl p-3 md:p-7 hover:border-purple-500/40 hover:bg-white/[0.07] transition-all duration-300 overflow-hidden ${i === 2 ? 'col-span-2 md:col-span-1' : ''}`}
+              key={s.id}
+              className={`group relative bg-white/5 border border-white/10 rounded-2xl p-3 md:p-7 hover:border-purple-500/40 hover:bg-white/[0.07] transition-all duration-300 overflow-hidden ${i === skillGroupList.length - 1 && skillGroupList.length % 2 !== 0 ? 'col-span-2 md:col-span-1' : ''}`}
             >
               {/* Glow on hover */}
               <div className="absolute inset-0 bg-gradient-to-br from-purple-600/0 to-violet-600/0 group-hover:from-purple-600/10 group-hover:to-violet-600/5 transition-all duration-500 rounded-2xl" />

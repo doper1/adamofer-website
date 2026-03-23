@@ -1,24 +1,36 @@
 "use client";
-import { useState } from "react";
-
-const INITIAL = [
-  { id: 1, title: "K8s Auto-Scaler", description: "Built a custom Kubernetes horizontal pod autoscaler with ML-based prediction to proactively scale workloads before traffic spikes.", tags: ["Kubernetes", "Python", "Prometheus", "Go"], icon: "⚡", link: "#" },
-  { id: 2, title: "CI/CD Pipeline Framework", description: "Designed a reusable GitOps CI/CD framework using Jenkins and ArgoCD, cutting deployment time by 60% across 10+ microservices.", tags: ["Jenkins", "ArgoCD", "Docker", "Bash"], icon: "🔄", link: "#" },
-  { id: 3, title: "Infrastructure as Code Suite", description: "Provisioned entire cloud infrastructure on AWS using Terraform modules, supporting multi-environment deployments with zero downtime.", tags: ["Terraform", "AWS", "Ansible", "Python"], icon: "🏗️", link: "#" },
-  { id: 4, title: "Observability Platform", description: "Deployed a full-stack monitoring and alerting platform (Prometheus + Grafana + Loki) enabling real-time visibility across all services.", tags: ["Prometheus", "Grafana", "Loki", "Helm"], icon: "📊", link: "#" },
-  { id: 5, title: "Full-Stack Web App", description: "Developed a production-ready web application with React frontend and Node.js backend, containerized and deployed on AWS ECS.", tags: ["React", "Node.js", "AWS ECS", "PostgreSQL"], icon: "🌐", link: "#" },
-  { id: 6, title: "Security Automation", description: "Automated vulnerability scanning and compliance checks across infrastructure using custom scripts and integrated security tooling.", tags: ["Python", "Bash", "Trivy", "Snyk"], icon: "🔐", link: "#" },
-];
+import { useState, useEffect } from "react";
+import {
+  getProjects,
+  createProject,
+  updateProject,
+  deleteProject,
+} from "@/app/actions";
 
 const BLANK = { title: "", description: "", tags: [], icon: "🚀", link: "#" };
 const inputCls = "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all text-sm";
 const labelCls = "block text-xs text-gray-400 mb-1 font-medium";
 
 export default function ProjectsTab() {
-  const [items, setItems] = useState(INITIAL);
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(BLANK);
   const [newTag, setNewTag] = useState("");
+
+  const fetchData = async () => {
+    setLoading(true);
+    const res = await getProjects();
+    if (res.success) {
+      setItems(res.data.map((p) => ({
+        ...p,
+        tags: p.tags.map((t) => t.tag),
+      })));
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => { fetchData(); }, []);
 
   const openEdit = (item) => { setEditing(item.id); setForm({ ...item }); };
   const openNew = () => { setEditing("new"); setForm(BLANK); };
@@ -27,12 +39,35 @@ export default function ProjectsTab() {
   const addTag = () => { if (!newTag.trim()) return; setForm({ ...form, tags: [...form.tags, newTag.trim()] }); setNewTag(""); };
   const removeTag = (i) => setForm({ ...form, tags: form.tags.filter((_, idx) => idx !== i) });
 
-  const save = () => {
-    if (editing === "new") setItems([...items, { ...form, id: Date.now() }]);
-    else setItems(items.map((i) => (i.id === editing ? { ...form, id: editing } : i)));
+  const save = async () => {
+    setLoading(true);
+    const data = {
+      title: form.title,
+      description: form.description,
+      icon: form.icon,
+      link: form.link,
+      gradient: form.gradient,
+      displayOrder: form.displayOrder,
+      tags: form.tags.map((tag) => ({ tag })),
+    };
+    if (editing === "new") {
+      await createProject(data);
+    } else {
+      await updateProject(editing, data);
+    }
     cancel();
+    await fetchData();
   };
-  const remove = (id) => setItems(items.filter((i) => i.id !== id));
+
+  const remove = async (id) => {
+    setLoading(true);
+    await deleteProject(id);
+    await fetchData();
+  };
+
+  if (loading && items.length === 0) {
+    return <div className="text-center py-12 text-gray-400">Loading projects...</div>;
+  }
 
   return (
     <div className="space-y-4">

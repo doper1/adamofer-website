@@ -1,71 +1,91 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getSiteConfig, updateSiteConfig } from "@/app/actions";
 
-const inputCls = "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all text-sm";
-const labelCls = "block text-sm text-gray-400 mb-2 font-medium";
+const FIELDS = [
+  { key: "name", label: "Name", type: "text" },
+  { key: "subtitle", label: "Subtitle", type: "text" },
+  { key: "description", label: "Description", type: "textarea" },
+  { key: "github_url", label: "GitHub URL", type: "text" },
+  { key: "linkedin_url", label: "LinkedIn URL", type: "text" },
+  { key: "public_email", label: "Public Email", type: "text" },
+  { key: "contact_email", label: "Contact Email", type: "text" },
+  { key: "hobbies", label: "Hobbies", type: "textarea" },
+];
 
 export default function SiteConfigTab() {
-  const [form, setForm] = useState({
-    name: "Adam Ofer",
-    subtitle: "DevOps Engineer & Software Developer",
-    description: "Building robust infrastructure, elegant code, and scalable systems. Based in Israel — passionate about automation, clean architecture, and performance.",
-    githubUrl: "#",
-    linkedinUrl: "#",
-    publicEmail: "adam@example.com",
-    contactEmail: "adam.ofer@example.com",
-    hobbies: "🏃 Marathon Runner, 🎹 Piano Player, ☁️ Cloud Architect, 🇮🇱 Based in Israel",
-  });
-  const [saved, setSaved] = useState(false);
+  const [form, setForm] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [status, setStatus] = useState(null);
 
-  const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
+  useEffect(() => {
+    getSiteConfig().then((res) => {
+      if (res.success) setForm(res.data || {});
+      setLoading(false);
+    });
+  }, []);
 
-  const handleSave = (e) => {
-    e.preventDefault();
-    // In production, this would call a server action to persist to DB.
-    setSaved(true);
-    setTimeout(() => setSaved(false), 3000);
+  const handleChange = (key, value) => {
+    setForm((prev) => ({ ...prev, [key]: value }));
+    setStatus(null);
   };
 
+  const handleSave = async () => {
+    setSaving(true);
+    setStatus(null);
+    try {
+      const res = await updateSiteConfig(form);
+      setStatus(res.success ? "saved" : "error");
+    } catch {
+      setStatus("error");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="w-8 h-8 border-4 border-slate-200 border-t-purple-600 rounded-full animate-spin" />
+      </div>
+    );
+  }
+
   return (
-    <form onSubmit={handleSave} className="space-y-6 max-w-2xl">
-      <div>
-        <label className={labelCls}>Name / Hero Title</label>
-        <input className={inputCls} value={form.name} onChange={set("name")} placeholder="Your Name" />
+    <div className="max-w-2xl space-y-5">
+      {FIELDS.map(({ key, label, type }) => (
+        <div key={key} className="flex flex-col gap-1.5">
+          <label className="text-sm text-gray-400">{label}</label>
+          {type === "textarea" ? (
+            <textarea
+              rows={3}
+              value={form[key] || ""}
+              onChange={(e) => handleChange(key, e.target.value)}
+              className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm resize-none focus:outline-none focus:border-purple-500"
+            />
+          ) : (
+            <input
+              type="text"
+              value={form[key] || ""}
+              onChange={(e) => handleChange(key, e.target.value)}
+              className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-purple-500"
+            />
+          )}
+        </div>
+      ))}
+
+      <div className="flex items-center gap-4 pt-2">
+        <button
+          onClick={handleSave}
+          disabled={saving}
+          className="px-6 py-2 bg-purple-600 hover:bg-purple-700 disabled:opacity-50 text-white text-sm font-medium rounded-lg transition-colors"
+        >
+          {saving ? "Saving..." : "Save"}
+        </button>
+        {status === "saved" && <span className="text-green-400 text-sm">Saved successfully</span>}
+        {status === "error" && <span className="text-red-400 text-sm">Failed to save</span>}
       </div>
-      <div>
-        <label className={labelCls}>Hero Subtitle</label>
-        <input className={inputCls} value={form.subtitle} onChange={set("subtitle")} placeholder="Your Role" />
-      </div>
-      <div>
-        <label className={labelCls}>Hero Description</label>
-        <textarea className={`${inputCls} resize-none`} rows={3} value={form.description} onChange={set("description")} />
-      </div>
-      <div>
-        <label className={labelCls}>GitHub URL</label>
-        <input className={inputCls} value={form.githubUrl} onChange={set("githubUrl")} placeholder="https://github.com/..." />
-      </div>
-      <div>
-        <label className={labelCls}>LinkedIn URL</label>
-        <input className={inputCls} value={form.linkedinUrl} onChange={set("linkedinUrl")} placeholder="https://linkedin.com/in/..." />
-      </div>
-      <div>
-        <label className={labelCls}>Email (shown publicly)</label>
-        <input className={inputCls} type="email" value={form.publicEmail} onChange={set("publicEmail")} />
-      </div>
-      <div>
-        <label className={labelCls}>Contact Form — Send To Email</label>
-        <input className={inputCls} type="email" value={form.contactEmail} onChange={set("contactEmail")} />
-      </div>
-      <div>
-        <label className={labelCls}>Hobbies (comma-separated: emoji label, ...)</label>
-        <input className={inputCls} value={form.hobbies} onChange={set("hobbies")} placeholder="🏃 Runner, 🎹 Piano Player..." />
-      </div>
-      <button
-        type="submit"
-        className="w-full sm:w-auto px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-500 hover:to-violet-500 text-white transition-all duration-200 shadow-lg shadow-purple-900/30"
-      >
-        {saved ? "✓ Saved!" : "Save Changes"}
-      </button>
-    </form>
+    </div>
   );
 }

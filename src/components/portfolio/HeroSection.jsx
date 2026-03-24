@@ -102,8 +102,7 @@ export default function HeroSection({ name, subtitle, description }) {
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-700/20 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-violet-600/15 rounded-full blur-[100px] pointer-events-none" />
 
-      {/* Grid overlay */}
-      <div className="absolute inset-0 h-[120%] bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
+
 
     <div className="relative z-10 text-center px-4 md:px-8 max-w-4xl mx-auto mt-10">
         <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-6 leading-none">

@@ -22,9 +22,6 @@ export default async function CertificatesSection() {
           <p className="text-purple-400 text-xs md:text-sm uppercase tracking-[0.2em] md:tracking-[0.3em] font-medium mb-3">Verified Skills</p>
           <h2 className="text-2xl md:text-5xl font-bold text-white">Certifications</h2>
           <div className="mt-4 w-12 md:w-16 h-1 bg-gradient-to-r from-purple-500 to-violet-500 mx-auto rounded-full" />
-          <p className="text-gray-500 mt-5 text-base max-w-xl mx-auto">
-            Industry-recognized credentials validating my expertise in cloud infrastructure and DevOps.
-          </p>
         </div>
 
         <div className="flex flex-wrap justify-center gap-4 md:gap-6">

@@ -22,7 +22,7 @@ export default function NavBar() {
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? "bg-black/80 backdrop-blur-md py-3" : "bg-transparent py-5"}`}>
       <div className="max-w-6xl mx-auto px-6 flex items-center justify-center">
         {/* Desktop */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-10">
           {links.map((l) => (
             <button
               key={l}
@@ -32,12 +32,6 @@ export default function NavBar() {
               {l}
             </button>
           ))}
-          <button
-            onClick={() => scrollTo("Contact")}
-            className="ml-2 px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-500 hover:to-violet-500 transition-all duration-200 shadow-lg shadow-purple-900/30"
-          >
-            Hire Me
-          </button>
         </div>
 
         {/* Mobile hamburger */}

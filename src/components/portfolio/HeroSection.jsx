@@ -50,7 +50,9 @@ export default function HeroSection({ name, subtitle, description }) {
       });
     }
 
+    let t = 0;
     const draw = () => {
+      t += 0.005;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       particles.forEach((p) => {
         ctx.beginPath();
@@ -73,7 +75,7 @@ export default function HeroSection({ name, subtitle, description }) {
 
         p.x += p.dx;
         p.y += p.dy;
-        
+
         if (p.x < 0 && p.dx < 0) p.dx *= -1;
         if (p.x > canvas.width && p.dx > 0) p.dx *= -1;
         if (p.y < 0 && p.dy < 0) p.dy *= -1;
@@ -103,7 +105,7 @@ export default function HeroSection({ name, subtitle, description }) {
       {/* Grid overlay */}
       <div className="absolute inset-0 h-[120%] bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
 
-      <div className="relative z-10 text-center px-4 md:px-8 max-w-4xl mx-auto">
+    <div className="relative z-10 text-center px-4 md:px-8 max-w-4xl mx-auto mt-10">
         <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-6 leading-none">
           <span className="text-white">{firstName}</span>{" "}
           <span className="bg-gradient-to-r from-purple-400 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent">

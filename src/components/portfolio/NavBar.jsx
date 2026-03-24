@@ -20,14 +20,7 @@ export default function NavBar() {
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? "bg-black/80 backdrop-blur-md py-3" : "bg-transparent py-5"}`}>
-      <div className="max-w-6xl mx-auto px-6 flex items-center justify-between">
-        <span
-          className="text-xl font-bold bg-gradient-to-r from-purple-400 to-violet-500 bg-clip-text text-transparent cursor-pointer"
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        >
-          AO
-        </span>
-
+      <div className="max-w-6xl mx-auto px-6 flex items-center justify-center">
         {/* Desktop */}
         <div className="hidden md:flex items-center gap-8">
           {links.map((l) => (

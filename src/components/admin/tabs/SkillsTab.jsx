@@ -67,6 +67,25 @@ export default function SkillsTab() {
     await fetchData();
   };
 
+  const move = async (index, direction) => {
+    const targetIndex = index + direction;
+    if (targetIndex < 0 || targetIndex >= groups.length) return;
+    setLoading(true);
+    const current = groups[index];
+    const target = groups[targetIndex];
+    await updateSkillGroup(current.id, {
+      category: current.category, icon: current.icon, color: current.color,
+      displayOrder: target.displayOrder ?? targetIndex,
+      skills: current.items.map((name) => ({ name })),
+    });
+    await updateSkillGroup(target.id, {
+      category: target.category, icon: target.icon, color: target.color,
+      displayOrder: current.displayOrder ?? index,
+      skills: target.items.map((name) => ({ name })),
+    });
+    await fetchData();
+  };
+
   if (loading && groups.length === 0) {
     return <div className="text-center py-12 text-gray-400">Loading skills...</div>;
   }
@@ -116,9 +135,13 @@ export default function SkillsTab() {
       )}
 
       <div className="space-y-3">
-        {groups.map((g) => (
+        {groups.map((g, index) => (
           <div key={g.id} className="bg-white/5 border border-white/10 rounded-xl px-5 py-4 hover:border-purple-500/30 transition-colors group">
             <div className="flex items-center gap-3 mb-3">
+              <div className="flex flex-col gap-1 flex-shrink-0">
+                <button onClick={() => move(index, -1)} disabled={index === 0} className="text-gray-500 hover:text-white disabled:opacity-20 disabled:cursor-not-allowed text-xs transition-colors" aria-label="Move up">▲</button>
+                <button onClick={() => move(index, 1)} disabled={index === groups.length - 1} className="text-gray-500 hover:text-white disabled:opacity-20 disabled:cursor-not-allowed text-xs transition-colors" aria-label="Move down">▼</button>
+              </div>
               <span className="text-2xl">{g.icon}</span>
               <p className="text-white font-semibold text-sm flex-1">{g.category}</p>
               <div className="flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">

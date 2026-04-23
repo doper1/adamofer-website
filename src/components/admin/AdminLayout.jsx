@@ -24,7 +24,7 @@ export default function AdminLayout({ children, currentTab, setCurrentTab }) {
     { id: "stats", label: "Stats", icon: BarChart2 },
     { id: "config", label: "Site Config", icon: Settings },
     { id: "certificates", label: "Certificates", icon: Award },
-    { id: "skills", label: "Skills", icon: BookOpen },
+    { id: "skills", label: "Expertise", icon: BookOpen },
     { id: "projects", label: "Projects", icon: Rocket },
     { id: "experience", label: "Experience", icon: Briefcase },
     { id: "photos", label: "Photos", icon: ImageIcon },

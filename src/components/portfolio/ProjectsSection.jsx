@@ -33,17 +33,17 @@ export default async function ProjectsSection() {
               key={p.id}
               className="group relative bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-purple-500/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-purple-900/20 w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-1rem)]"
             >
-              {p.gradient && <div className={`h-1 w-full bg-gradient-to-r ${p.gradient}`} />}
+              {p.gradient && p.link && p.link !== "#" && <div className={`h-1 w-full bg-gradient-to-r ${p.gradient}`} />}
 
               <div className="p-3 md:p-6">
-                <div className="flex items-start justify-between mb-3 md:mb-4">
+                <div className="flex items-start justify-between gap-2 mb-1.5 md:mb-2">
+                  <h3 className="text-sm md:text-lg font-bold text-white group-hover:text-purple-300 transition-colors">
+                    {p.title}
+                  </h3>
                   {p.link && p.link !== "#" && (
-                    <a href={p.link} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-purple-400 transition-colors text-lg" title="View project">↗</a>
+                    <a href={p.link} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-purple-400 transition-colors text-lg flex-shrink-0" title="View project">↗</a>
                   )}
                 </div>
-                <h3 className="text-sm md:text-lg font-bold text-white mb-1.5 md:mb-2 group-hover:text-purple-300 transition-colors">
-                  {p.title}
-                </h3>
                 <p className="text-gray-500 text-[11px] md:text-sm leading-relaxed mb-4 md:mb-5">{p.description}</p>
                 {p.tags.length > 0 && (
                   <div className="flex flex-wrap gap-1.5 md:gap-2">

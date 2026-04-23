@@ -13,7 +13,10 @@ const nextConfig = {
         hostname: 'images.credly.com',
       },
     ],
+    formats: ['image/avif', 'image/webp'],
   },
+  compress: true,
+  poweredByHeader: false,
 };
 
 export default nextConfig;

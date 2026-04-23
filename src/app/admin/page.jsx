@@ -1,14 +1,21 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { useUser } from "@clerk/nextjs";
 import { getDashboardStats } from "@/app/actions";
-import SiteConfigTab from "@/components/admin/tabs/SiteConfigTab";
-import CertificatesTab from "@/components/admin/tabs/CertificatesTab";
-import SkillsTab from "@/components/admin/tabs/SkillsTab";
-import ProjectsTab from "@/components/admin/tabs/ProjectsTab";
-import ExperienceTab from "@/components/admin/tabs/ExperienceTab";
-import PhotosTab from "@/components/admin/tabs/PhotosTab";
+
+const SiteConfigTab = lazy(() => import("@/components/admin/tabs/SiteConfigTab"));
+const CertificatesTab = lazy(() => import("@/components/admin/tabs/CertificatesTab"));
+const SkillsTab = lazy(() => import("@/components/admin/tabs/SkillsTab"));
+const ProjectsTab = lazy(() => import("@/components/admin/tabs/ProjectsTab"));
+const ExperienceTab = lazy(() => import("@/components/admin/tabs/ExperienceTab"));
+const PhotosTab = lazy(() => import("@/components/admin/tabs/PhotosTab"));
+
+const TabFallback = () => (
+  <div className="flex items-center justify-center py-20">
+    <div className="w-8 h-8 border-4 border-slate-200 border-t-purple-600 rounded-full animate-spin" />
+  </div>
+);
 
 export default function Admin() {
   const [currentTab, setCurrentTab] = useState("stats");
@@ -33,7 +40,7 @@ export default function Admin() {
     stats: "Site Statistics",
     config: "Site Configuration",
     certificates: "Manage Certificates",
-    skills: "Manage Skills",
+    skills: "Manage Skills Groups",
     projects: "Manage Projects",
     experience: "Manage Experience",
     photos: "Manage Photos",
@@ -70,12 +77,12 @@ export default function Admin() {
         </div>
       )}
 
-      {currentTab === "config" && <SiteConfigTab />}
-      {currentTab === "certificates" && <CertificatesTab />}
-      {currentTab === "skills" && <SkillsTab />}
-      {currentTab === "projects" && <ProjectsTab />}
-      {currentTab === "experience" && <ExperienceTab />}
-      {currentTab === "photos" && <PhotosTab />}
+      {currentTab === "config" && <Suspense fallback={<TabFallback />}><SiteConfigTab /></Suspense>}
+      {currentTab === "certificates" && <Suspense fallback={<TabFallback />}><CertificatesTab /></Suspense>}
+      {currentTab === "skills" && <Suspense fallback={<TabFallback />}><SkillsTab /></Suspense>}
+      {currentTab === "projects" && <Suspense fallback={<TabFallback />}><ProjectsTab /></Suspense>}
+      {currentTab === "experience" && <Suspense fallback={<TabFallback />}><ExperienceTab /></Suspense>}
+      {currentTab === "photos" && <Suspense fallback={<TabFallback />}><PhotosTab /></Suspense>}
     </AdminLayout>
   );
 }

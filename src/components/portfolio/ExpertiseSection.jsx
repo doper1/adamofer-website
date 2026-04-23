@@ -23,7 +23,7 @@ export default async function ExpertiseSection() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12 md:mb-16">
           <p className="text-purple-400 text-xs md:text-sm uppercase tracking-[0.2em] md:tracking-[0.3em] font-medium mb-3">What I Do</p>
-          <h2 className="text-2xl md:text-5xl font-bold text-white">Expertise</h2>
+          <h2 className="text-2xl md:text-5xl font-bold text-white">Skills</h2>
           <div className="mt-4 w-12 md:w-16 h-1 bg-gradient-to-r from-purple-500 to-violet-500 mx-auto rounded-full" />
         </div>
 

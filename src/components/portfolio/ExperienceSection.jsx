@@ -5,10 +5,7 @@ export default async function ExperienceSection() {
   try {
     const result = await getExperiences();
     if (result.success) {
-      experienceList = result.data.map((exp) => ({
-        ...exp,
-        highlights: exp.highlights ? exp.highlights.map((h) => h.highlight) : [],
-      }));
+      experienceList = result.data;
     }
   } catch (error) {
     console.error("Failed to load experiences:", error);
@@ -39,15 +36,7 @@ export default async function ExperienceSection() {
                   </span>
                 </div>
 
-                <p className="text-gray-500 text-sm leading-relaxed mb-4">{exp.description}</p>
-
-                <div className="flex flex-wrap gap-2">
-                  {exp.highlights.map((h) => (
-                    <span key={h} className="text-xs text-gray-400 flex items-center gap-1">
-                      <span className="text-purple-500">▸</span> {h}
-                    </span>
-                  ))}
-                </div>
+                <p className="text-gray-500 text-sm leading-relaxed whitespace-pre-line">{exp.description}</p>
               </div>
             </div>
           ))}

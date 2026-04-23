@@ -40,6 +40,8 @@ export default async function CertificatesSection() {
                   <img
                     src={cert.badgeUrl}
                     alt={cert.title}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-contain drop-shadow-lg transition-transform duration-300 group-hover:scale-110"
                   />
                 ) : (

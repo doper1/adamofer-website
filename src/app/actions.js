@@ -44,8 +44,10 @@ export async function logVisit(ipHash, path) {
 
 export async function getDashboardStats() {
   try {
-    const totalVisitsResult = await db.select({ count: sql`count(*)` }).from(visits);
-    const uniqueVisitorsResult = await db.select({ count: sql`count(distinct ${visits.ipHash})` }).from(visits);
+    const [totalVisitsResult, uniqueVisitorsResult] = await Promise.all([
+      db.select({ count: sql`count(*)` }).from(visits),
+      db.select({ count: sql`count(distinct ${visits.ipHash})` }).from(visits),
+    ]);
 
     // Real chart data: visits per day for the last 14 days
     const chartRaw = await db.execute(sql`
@@ -159,20 +161,20 @@ export async function deleteCertificate(id) {
 
 export async function getSkillGroups() {
   try {
-    const groups = await db
-      .select()
-      .from(skillGroups)
-      .orderBy(asc(skillGroups.displayOrder));
+    const [groups, allSkills] = await Promise.all([
+      db.select().from(skillGroups).orderBy(asc(skillGroups.displayOrder)),
+      db.select().from(skills),
+    ]);
 
-    const groupsWithSkills = await Promise.all(
-      groups.map(async (group) => {
-        const groupSkills = await db
-          .select()
-          .from(skills)
-          .where(eq(skills.groupId, group.id));
-        return { ...group, skills: groupSkills };
-      })
-    );
+    const skillsByGroup = {};
+    for (const s of allSkills) {
+      (skillsByGroup[s.groupId] ||= []).push(s);
+    }
+
+    const groupsWithSkills = groups.map((group) => ({
+      ...group,
+      skills: skillsByGroup[group.id] || [],
+    }));
 
     return { success: true, data: groupsWithSkills };
   } catch (error) {
@@ -257,20 +259,20 @@ export async function deleteSkillGroup(id) {
 
 export async function getProjects() {
   try {
-    const rows = await db
-      .select()
-      .from(projects)
-      .orderBy(asc(projects.displayOrder));
+    const [rows, allTags] = await Promise.all([
+      db.select().from(projects).orderBy(asc(projects.displayOrder)),
+      db.select().from(projectTags),
+    ]);
 
-    const projectsWithTags = await Promise.all(
-      rows.map(async (project) => {
-        const tags = await db
-          .select()
-          .from(projectTags)
-          .where(eq(projectTags.projectId, project.id));
-        return { ...project, tags };
-      })
-    );
+    const tagsByProject = {};
+    for (const t of allTags) {
+      (tagsByProject[t.projectId] ||= []).push(t);
+    }
+
+    const projectsWithTags = rows.map((project) => ({
+      ...project,
+      tags: tagsByProject[project.id] || [],
+    }));
 
     return { success: true, data: projectsWithTags };
   } catch (error) {
@@ -359,20 +361,20 @@ export async function deleteProject(id) {
 
 export async function getExperiences() {
   try {
-    const rows = await db
-      .select()
-      .from(experiences)
-      .orderBy(asc(experiences.displayOrder));
+    const [rows, allHighlights] = await Promise.all([
+      db.select().from(experiences).orderBy(asc(experiences.displayOrder)),
+      db.select().from(experienceHighlights),
+    ]);
 
-    const experiencesWithHighlights = await Promise.all(
-      rows.map(async (exp) => {
-        const highlights = await db
-          .select()
-          .from(experienceHighlights)
-          .where(eq(experienceHighlights.experienceId, exp.id));
-        return { ...exp, highlights };
-      })
-    );
+    const highlightsByExp = {};
+    for (const h of allHighlights) {
+      (highlightsByExp[h.experienceId] ||= []).push(h);
+    }
+
+    const experiencesWithHighlights = rows.map((exp) => ({
+      ...exp,
+      highlights: highlightsByExp[exp.id] || [],
+    }));
 
     return { success: true, data: experiencesWithHighlights };
   } catch (error) {
@@ -540,15 +542,17 @@ export async function getSiteConfig() {
 export async function updateSiteConfig(data) {
   try {
     const entries = Object.entries(data);
-    for (const [key, value] of entries) {
-      await db
-        .insert(siteConfig)
-        .values({ key, value })
-        .onConflictDoUpdate({
-          target: siteConfig.key,
-          set: { value, updatedAt: sql`now()` },
-        });
-    }
+    await Promise.all(
+      entries.map(([key, value]) =>
+        db
+          .insert(siteConfig)
+          .values({ key, value })
+          .onConflictDoUpdate({
+            target: siteConfig.key,
+            set: { value, updatedAt: sql`now()` },
+          })
+      )
+    );
     revalidatePath("/");
     return { success: true };
   } catch (error) {

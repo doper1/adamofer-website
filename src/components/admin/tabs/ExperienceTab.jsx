@@ -7,7 +7,7 @@ import {
   deleteExperience,
 } from "@/app/actions";
 
-const BLANK = { role: "", company: "", period: "", description: "", highlights: [] };
+const BLANK = { role: "", company: "", period: "", description: "" };
 const inputCls = "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all text-sm";
 const labelCls = "block text-xs text-gray-400 mb-1 font-medium";
 
@@ -16,16 +16,12 @@ export default function ExperienceTab() {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(BLANK);
-  const [newHL, setNewHL] = useState("");
 
   const fetchData = async () => {
     setLoading(true);
     const res = await getExperiences();
     if (res.success) {
-      setItems(res.data.map((exp) => ({
-        ...exp,
-        highlights: exp.highlights.map((h) => h.highlight),
-      })));
+      setItems(res.data);
     }
     setLoading(false);
   };
@@ -34,10 +30,7 @@ export default function ExperienceTab() {
 
   const openEdit = (item) => { setEditing(item.id); setForm({ ...item }); };
   const openNew = () => { setEditing("new"); setForm(BLANK); };
-  const cancel = () => { setEditing(null); setForm(BLANK); setNewHL(""); };
-
-  const addHL = () => { if (!newHL.trim()) return; setForm({ ...form, highlights: [...form.highlights, newHL.trim()] }); setNewHL(""); };
-  const removeHL = (i) => setForm({ ...form, highlights: form.highlights.filter((_, idx) => idx !== i) });
+  const cancel = () => { setEditing(null); setForm(BLANK); };
 
   const save = async () => {
     setLoading(true);
@@ -47,7 +40,7 @@ export default function ExperienceTab() {
       period: form.period,
       description: form.description,
       displayOrder: form.displayOrder,
-      highlights: form.highlights.map((highlight) => ({ highlight })),
+      highlights: [],
     };
     if (editing === "new") {
       await createExperience(data);
@@ -73,12 +66,12 @@ export default function ExperienceTab() {
     await updateExperience(current.id, {
       ...current,
       displayOrder: target.displayOrder ?? targetIndex,
-      highlights: current.highlights.map((h) => ({ highlight: h })),
+      highlights: [],
     });
     await updateExperience(target.id, {
       ...target,
       displayOrder: current.displayOrder ?? index,
-      highlights: target.highlights.map((h) => ({ highlight: h })),
+      highlights: [],
     });
     await fetchData();
   };
@@ -115,22 +108,7 @@ export default function ExperienceTab() {
           </div>
           <div>
             <label className={labelCls}>Description</label>
-            <textarea className={`${inputCls} resize-none`} rows={3} value={form.description} onChange={e => setForm({...form, description: e.target.value})} />
-          </div>
-          <div>
-            <label className={labelCls}>Highlights</label>
-            <div className="flex flex-col gap-1.5 mb-2">
-              {form.highlights.map((h, i) => (
-                <div key={i} className="flex items-center gap-2 text-sm text-gray-300">
-                  <span className="text-purple-500">▸</span> {h}
-                  <button onClick={() => removeHL(i)} className="ml-auto text-gray-600 hover:text-red-400 text-xs transition-colors">×</button>
-                </div>
-              ))}
-            </div>
-            <div className="flex gap-2">
-              <input className={inputCls} value={newHL} onChange={e => setNewHL(e.target.value)} onKeyDown={e => e.key === "Enter" && (e.preventDefault(), addHL())} placeholder="Add highlight..." />
-              <button onClick={addHL} type="button" className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white text-sm transition-colors whitespace-nowrap">Add</button>
-            </div>
+            <textarea className={`${inputCls} resize-none`} rows={5} value={form.description} onChange={e => setForm({...form, description: e.target.value})} placeholder="Describe your role and responsibilities..." />
           </div>
           <div className="flex gap-3 pt-2">
             <button onClick={save} className="px-5 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-sm font-medium transition-colors">Save</button>

@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
+/* Allow text selection for accessibility; disable only on interactive/decorative elements */
+img, canvas, button, nav {
   user-select: none;
 }
 

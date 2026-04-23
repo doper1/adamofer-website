@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { submitContactForm } from "@/app/actions";
 
 export default function ContactSection({ githubUrl, linkedinUrl, publicEmail }) {
@@ -16,13 +16,17 @@ export default function ContactSection({ githubUrl, linkedinUrl, publicEmail }) 
     { label: "Email", href: `mailto:${displayEmail}` },
   ];
 
-  const handleSubmit = async (e) => {
+  const handleChange = useCallback((field, value) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+  }, []);
+
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     setStatus("sending");
-    await submitContactForm(form);
-    setStatus("sent");
-    setForm({ name: "", email: "", message: "" });
-  };
+    const result = await submitContactForm(form);
+    setStatus(result.success ? "sent" : "error");
+    if (result.success) setForm({ name: "", email: "", message: "" });
+  }, [form]);
 
   return (
     <section id="contact" className="py-12 md:py-24 px-4 md:px-8 relative overflow-hidden">
@@ -44,6 +48,13 @@ export default function ContactSection({ githubUrl, linkedinUrl, publicEmail }) 
             <p className="text-gray-500">I'll get back to you as soon as possible.</p>
             <button onClick={() => setStatus(null)} className="mt-6 text-purple-400 hover:text-purple-300 text-sm underline">Send another</button>
           </div>
+        ) : status === "error" ? (
+          <div className="text-center py-16">
+            <div className="text-5xl mb-4">⚠️</div>
+            <h3 className="text-2xl font-bold text-white mb-2">Something went wrong</h3>
+            <p className="text-gray-500">Please try again later.</p>
+            <button onClick={() => setStatus(null)} className="mt-6 text-purple-400 hover:text-purple-300 text-sm underline">Try again</button>
+          </div>
         ) : (
           <form onSubmit={handleSubmit} className="bg-white/5 border border-white/10 rounded-3xl p-5 md:p-10 space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
@@ -53,7 +64,7 @@ export default function ContactSection({ githubUrl, linkedinUrl, publicEmail }) 
                   type="text"
                   required
                   value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  onChange={(e) => handleChange("name", e.target.value)}
                   placeholder=""
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all text-sm"
                 />
@@ -64,7 +75,7 @@ export default function ContactSection({ githubUrl, linkedinUrl, publicEmail }) 
                   type="email"
                   required
                   value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  onChange={(e) => handleChange("email", e.target.value)}
                   placeholder=""
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all text-sm"
                 />
@@ -76,7 +87,7 @@ export default function ContactSection({ githubUrl, linkedinUrl, publicEmail }) 
                 required
                 rows={5}
                 value={form.message}
-                onChange={(e) => setForm({ ...form, message: e.target.value })}
+                onChange={(e) => handleChange("message", e.target.value)}
                 placeholder="Tell me about your project or opportunity..."
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all text-sm resize-none"
               />

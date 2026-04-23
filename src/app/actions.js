@@ -15,6 +15,7 @@ import {
   siteConfig,
 } from "@/lib/schema";
 import { sql, eq, asc } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 export async function submitContactForm(formData) {
   try {
@@ -112,6 +113,7 @@ export async function createCertificate(data) {
         displayOrder: data.displayOrder,
       })
       .returning();
+    revalidatePath("/");
     return { success: true, data: created };
   } catch (error) {
     console.error("Failed to create certificate:", error);
@@ -134,6 +136,7 @@ export async function updateCertificate(id, data) {
       })
       .where(eq(certificates.id, id))
       .returning();
+    revalidatePath("/");
     return { success: true, data: updated };
   } catch (error) {
     console.error("Failed to update certificate:", error);
@@ -144,6 +147,7 @@ export async function updateCertificate(id, data) {
 export async function deleteCertificate(id) {
   try {
     await db.delete(certificates).where(eq(certificates.id, id));
+    revalidatePath("/");
     return { success: true };
   } catch (error) {
     console.error("Failed to delete certificate:", error);
@@ -198,6 +202,7 @@ export async function createSkillGroup(data) {
       );
     }
 
+    revalidatePath("/");
     return { success: true, data: created };
   } catch (error) {
     console.error("Failed to create skill group:", error);
@@ -229,6 +234,7 @@ export async function updateSkillGroup(id, data) {
       );
     }
 
+    revalidatePath("/");
     return { success: true, data: updated };
   } catch (error) {
     console.error("Failed to update skill group:", error);
@@ -239,6 +245,7 @@ export async function updateSkillGroup(id, data) {
 export async function deleteSkillGroup(id) {
   try {
     await db.delete(skillGroups).where(eq(skillGroups.id, id));
+    revalidatePath("/");
     return { success: true };
   } catch (error) {
     console.error("Failed to delete skill group:", error);
@@ -295,6 +302,7 @@ export async function createProject(data) {
       );
     }
 
+    revalidatePath("/");
     return { success: true, data: created };
   } catch (error) {
     console.error("Failed to create project:", error);
@@ -328,6 +336,7 @@ export async function updateProject(id, data) {
       );
     }
 
+    revalidatePath("/");
     return { success: true, data: updated };
   } catch (error) {
     console.error("Failed to update project:", error);
@@ -338,6 +347,7 @@ export async function updateProject(id, data) {
 export async function deleteProject(id) {
   try {
     await db.delete(projects).where(eq(projects.id, id));
+    revalidatePath("/");
     return { success: true };
   } catch (error) {
     console.error("Failed to delete project:", error);
@@ -393,6 +403,7 @@ export async function createExperience(data) {
       );
     }
 
+    revalidatePath("/");
     return { success: true, data: created };
   } catch (error) {
     console.error("Failed to create experience:", error);
@@ -427,6 +438,7 @@ export async function updateExperience(id, data) {
       );
     }
 
+    revalidatePath("/");
     return { success: true, data: updated };
   } catch (error) {
     console.error("Failed to update experience:", error);
@@ -437,6 +449,7 @@ export async function updateExperience(id, data) {
 export async function deleteExperience(id) {
   try {
     await db.delete(experiences).where(eq(experiences.id, id));
+    revalidatePath("/");
     return { success: true };
   } catch (error) {
     console.error("Failed to delete experience:", error);
@@ -470,6 +483,7 @@ export async function createPhoto(data) {
         displayOrder: data.displayOrder,
       })
       .returning();
+    revalidatePath("/");
     return { success: true, data: created };
   } catch (error) {
     console.error("Failed to create photo:", error);
@@ -480,6 +494,7 @@ export async function createPhoto(data) {
 export async function deletePhoto(id) {
   try {
     await db.delete(photos).where(eq(photos.id, id));
+    revalidatePath("/");
     return { success: true };
   } catch (error) {
     console.error("Failed to delete photo:", error);
@@ -515,6 +530,7 @@ export async function updateSiteConfig(data) {
           set: { value, updatedAt: sql`now()` },
         });
     }
+    revalidatePath("/");
     return { success: true };
   } catch (error) {
     console.error("Failed to update site config:", error);

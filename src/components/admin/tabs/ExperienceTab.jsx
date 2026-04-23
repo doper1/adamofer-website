@@ -64,6 +64,25 @@ export default function ExperienceTab() {
     await fetchData();
   };
 
+  const move = async (index, direction) => {
+    const targetIndex = index + direction;
+    if (targetIndex < 0 || targetIndex >= items.length) return;
+    setLoading(true);
+    const current = items[index];
+    const target = items[targetIndex];
+    await updateExperience(current.id, {
+      ...current,
+      displayOrder: target.displayOrder ?? targetIndex,
+      highlights: current.highlights.map((h) => ({ highlight: h })),
+    });
+    await updateExperience(target.id, {
+      ...target,
+      displayOrder: current.displayOrder ?? index,
+      highlights: target.highlights.map((h) => ({ highlight: h })),
+    });
+    await fetchData();
+  };
+
   if (loading && items.length === 0) {
     return <div className="text-center py-12 text-gray-400">Loading experience...</div>;
   }
@@ -121,9 +140,22 @@ export default function ExperienceTab() {
       )}
 
       <div className="space-y-3">
-        {items.map((exp) => (
+        {items.map((exp, index) => (
           <div key={exp.id} className="flex items-start gap-4 bg-white/5 border border-white/10 rounded-xl px-5 py-4 hover:border-purple-500/30 transition-colors group">
-            <div className="w-2 h-2 rounded-full bg-purple-500 mt-1.5 flex-shrink-0" />
+            <div className="flex flex-col gap-1 flex-shrink-0">
+              <button
+                onClick={() => move(index, -1)}
+                disabled={index === 0}
+                className="text-gray-500 hover:text-white disabled:opacity-20 disabled:cursor-not-allowed text-xs transition-colors"
+                aria-label="Move up"
+              >▲</button>
+              <button
+                onClick={() => move(index, 1)}
+                disabled={index === items.length - 1}
+                className="text-gray-500 hover:text-white disabled:opacity-20 disabled:cursor-not-allowed text-xs transition-colors"
+                aria-label="Move down"
+              >▼</button>
+            </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center justify-between gap-2">
                 <div>

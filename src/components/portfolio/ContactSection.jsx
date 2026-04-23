@@ -56,7 +56,7 @@ export default function ContactSection({ githubUrl, linkedinUrl, publicEmail }) 
                   required
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  placeholder="John Doe"
+                  placeholder=""
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all text-sm"
                 />
               </div>
@@ -67,7 +67,7 @@ export default function ContactSection({ githubUrl, linkedinUrl, publicEmail }) 
                   required
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  placeholder="john@example.com"
+                  placeholder=""
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all text-sm"
                 />
               </div>

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getPhotos, createPhoto, deletePhoto } from "@/app/actions";
 
 const BLANK = { url: "", caption: "", category: "Work" };
@@ -11,6 +11,7 @@ export default function PhotosTab() {
   const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
   const [form, setForm] = useState(BLANK);
+  const fileRef = useRef(null);
 
   const fetchData = async () => {
     setLoading(true);
@@ -21,13 +22,28 @@ export default function PhotosTab() {
 
   useEffect(() => { fetchData(); }, []);
 
+  const handleFile = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => setForm((f) => ({ ...f, url: reader.result }));
+    reader.readAsDataURL(file);
+  };
+
   const save = async () => {
-    if (!form.url.trim()) return;
+    if (!form.url) return;
     setLoading(true);
     await createPhoto(form);
     setForm(BLANK);
     setAdding(false);
+    if (fileRef.current) fileRef.current.value = "";
     await fetchData();
+  };
+
+  const cancel = () => {
+    setAdding(false);
+    setForm(BLANK);
+    if (fileRef.current) fileRef.current.value = "";
   };
 
   const remove = async (id) => {
@@ -53,12 +69,22 @@ export default function PhotosTab() {
         <div className="bg-white/5 border border-purple-500/30 rounded-2xl p-4 md:p-6 space-y-4">
           <h3 className="text-white font-semibold">Add Photo</h3>
           <div>
-            <label className={labelCls}>Image URL</label>
-            <input className={inputCls} value={form.url} onChange={e => setForm({...form, url: e.target.value})} placeholder="https://..." />
+            <label className={labelCls}>Image</label>
+            <label className="flex items-center justify-center gap-3 w-full border-2 border-dashed border-white/10 hover:border-purple-500/40 rounded-xl p-6 cursor-pointer transition-colors">
+              <input ref={fileRef} type="file" accept="image/*" onChange={handleFile} className="hidden" />
+              {form.url ? (
+                <img src={form.url} alt="Preview" className="rounded-lg max-h-48 object-contain" />
+              ) : (
+                <div className="text-center">
+                  <p className="text-gray-400 text-sm">Click to choose a photo</p>
+                  <p className="text-gray-600 text-xs mt-1">PNG, JPG, WEBP</p>
+                </div>
+              )}
+            </label>
+            {form.url && (
+              <button onClick={() => { setForm({...form, url: ""}); if (fileRef.current) fileRef.current.value = ""; }} className="mt-2 text-red-400 hover:text-red-300 text-xs transition-colors">Remove image</button>
+            )}
           </div>
-          {form.url && (
-            <img src={form.url} alt="Preview" className="rounded-xl h-40 w-full object-cover border border-white/10" onError={e => e.currentTarget.style.display='none'} />
-          )}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className={labelCls}>Caption</label>
@@ -72,8 +98,8 @@ export default function PhotosTab() {
             </div>
           </div>
           <div className="flex gap-3 pt-2">
-            <button onClick={save} className="px-5 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-sm font-medium transition-colors">Add Photo</button>
-            <button onClick={() => { setAdding(false); setForm(BLANK); }} className="px-5 py-2 rounded-lg border border-white/10 text-gray-400 hover:text-white text-sm transition-colors">Cancel</button>
+            <button onClick={save} disabled={!form.url} className="px-5 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium transition-colors">Add Photo</button>
+            <button onClick={cancel} className="px-5 py-2 rounded-lg border border-white/10 text-gray-400 hover:text-white text-sm transition-colors">Cancel</button>
           </div>
         </div>
       )}
@@ -81,7 +107,7 @@ export default function PhotosTab() {
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         {photos.map((p) => (
           <div key={p.id} className="group relative rounded-2xl overflow-hidden border border-white/10 hover:border-purple-500/40 transition-all">
-            <img src={p.url} alt={p.caption} className="w-full h-44 object-cover" onError={e => { e.currentTarget.src = ''; e.currentTarget.className = 'hidden'; }} />
+            <img src={p.url} alt={p.caption} className="w-full h-44 object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity flex items-end p-3">
               <div className="flex-1">
                 <p className="text-white text-xs font-medium">{p.caption}</p>

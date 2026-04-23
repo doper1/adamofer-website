@@ -1,7 +1,15 @@
 "use client";
 import { useState, useEffect } from "react";
 
-const links = ["About", "Certifications", "Expertise", "Projects", "Experience", "Contact"];
+const links = [
+  { label: "About", id: "about" },
+  { label: "Certifications", id: "certifications" },
+  { label: "Expertise", id: "expertise" },
+  { label: "Projects", id: "projects" },
+  { label: "Experience", id: "experience" },
+  { label: "Glimpse of Me", id: "photos" },
+  { label: "Contact", id: "contact" },
+];
 
 export default function NavBar() {
   const [scrolled, setScrolled] = useState(false);
@@ -25,11 +33,11 @@ export default function NavBar() {
         <div className="hidden md:flex items-center gap-10">
           {links.map((l) => (
             <button
-              key={l}
-              onClick={() => scrollTo(l)}
+              key={l.id}
+              onClick={() => scrollTo(l.id)}
               className="text-sm text-gray-400 hover:text-white transition-colors duration-200 tracking-wide uppercase"
             >
-              {l}
+              {l.label}
             </button>
           ))}
         </div>
@@ -47,8 +55,8 @@ export default function NavBar() {
       {menuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 h-screen bg-black/95 backdrop-blur-xl px-6 py-8 flex flex-col gap-4 items-center">
           {links.map((l) => (
-            <button key={l} onClick={() => scrollTo(l)} className="text-lg font-medium text-gray-300 hover:text-white uppercase tracking-widest w-full text-center py-2">
-              {l}
+            <button key={l.id} onClick={() => scrollTo(l.id)} className="text-lg font-medium text-gray-300 hover:text-white uppercase tracking-widest w-full text-center py-2">
+              {l.label}
             </button>
           ))}
         </div>

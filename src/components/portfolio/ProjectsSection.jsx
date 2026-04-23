@@ -27,39 +27,34 @@ export default async function ProjectsSection() {
           <div className="mt-4 w-12 md:w-16 h-1 bg-gradient-to-r from-purple-500 to-violet-500 mx-auto rounded-full" />
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        <div className="flex flex-wrap justify-center gap-4 md:gap-6">
           {projectList.map((p) => (
             <div
               key={p.id}
-              className="group relative bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-purple-500/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-purple-900/20"
+              className="group relative bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-purple-500/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-purple-900/20 w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-1rem)]"
             >
-              {/* Top gradient bar */}
               <div className={`h-1 w-full bg-gradient-to-r ${p.gradient}`} />
 
               <div className="p-3 md:p-6">
                 <div className="flex items-start justify-between mb-3 md:mb-4">
                   <span className="text-xl md:text-3xl">{p.icon}</span>
-                  <a
-                    href={p.link}
-                    className="text-gray-600 hover:text-purple-400 transition-colors text-lg"
-                    title="View project"
-                  >
-                    ↗
-                  </a>
+                  {p.link && p.link !== "#" && (
+                    <a href={p.link} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-purple-400 transition-colors text-lg" title="View project">↗</a>
+                  )}
                 </div>
-
-                <h3 className="text-sm md:text-lg font-bold text-white mb-1.5 md:mb-2 group-hover:text-purple-300 transition-colors line-clamp-1">
+                <h3 className="text-sm md:text-lg font-bold text-white mb-1.5 md:mb-2 group-hover:text-purple-300 transition-colors">
                   {p.title}
                 </h3>
-                <p className="text-gray-500 text-[11px] md:text-sm leading-relaxed mb-4 md:mb-5 line-clamp-2">{p.description}</p>
-
-                <div className="flex flex-wrap gap-1.5 md:gap-2">
-                  {p.tags.slice(0, 3).map((tag) => (
-                    <span key={tag} className="px-2 py-0.5 rounded-md text-[10px] md:text-xs bg-purple-500/10 text-purple-300 border border-purple-500/20">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+                <p className="text-gray-500 text-[11px] md:text-sm leading-relaxed mb-4 md:mb-5">{p.description}</p>
+                {p.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5 md:gap-2">
+                    {p.tags.map((tag) => (
+                      <span key={tag} className="px-2 py-0.5 rounded-md text-[10px] md:text-xs bg-purple-500/10 text-purple-300 border border-purple-500/20">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           ))}

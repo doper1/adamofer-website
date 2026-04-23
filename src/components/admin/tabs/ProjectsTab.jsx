@@ -1,13 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
-import {
-  getProjects,
-  createProject,
-  updateProject,
-  deleteProject,
-} from "@/app/actions";
+import { getProjects, createProject, updateProject, deleteProject } from "@/app/actions";
 
-const BLANK = { title: "", description: "", tags: [], icon: "🚀", link: "#" };
+const BLANK = { title: "", description: "", tags: [], icon: "🚀", link: "#", gradient: "from-purple-500 to-violet-600" };
 const inputCls = "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all text-sm";
 const labelCls = "block text-xs text-gray-400 mb-1 font-medium";
 

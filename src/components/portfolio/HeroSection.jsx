@@ -149,7 +149,20 @@ export default function HeroSection({ name, subtitle, description }) {
           {displayDescription}
         </p>
 
-
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <button
+            onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
+            className="px-6 py-3 md:px-8 md:py-4 rounded-full bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-500 hover:to-violet-500 text-white font-semibold text-base transition-all duration-300 shadow-xl shadow-purple-900/40 hover:shadow-purple-800/60 hover:-translate-y-0.5"
+          >
+            View My Work
+          </button>
+          <button
+            onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+            className="px-6 py-3 md:px-8 md:py-4 rounded-full border border-white/20 text-white font-semibold text-base hover:border-purple-500/50 hover:bg-white/5 transition-all duration-300"
+          >
+            Get In Touch
+          </button>
+        </div>
 
         <div className="mt-16 flex flex-col items-center gap-2 text-gray-600 text-xs">
           <span className="tracking-widest uppercase">Scroll</span>

@@ -34,9 +34,7 @@ export default function ContactSection({ githubUrl, linkedinUrl, publicEmail }) 
           <p className="text-purple-400 text-xs md:text-sm uppercase tracking-[0.2em] md:tracking-[0.3em] font-medium mb-3">Let's Talk</p>
           <h2 className="text-2xl md:text-5xl font-bold text-white">Get In Touch</h2>
           <div className="mt-4 w-12 md:w-16 h-1 bg-gradient-to-r from-purple-500 to-violet-500 mx-auto rounded-full" />
-          <p className="text-gray-500 mt-6 text-base leading-relaxed">
-            Interested in working together or just want to say hi? Drop me a message — I read everything.
-          </p>
+
         </div>
 
         {status === "sent" ? (

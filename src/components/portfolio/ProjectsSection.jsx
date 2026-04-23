@@ -37,7 +37,6 @@ export default async function ProjectsSection() {
 
               <div className="p-3 md:p-6">
                 <div className="flex items-start justify-between mb-3 md:mb-4">
-                  <span className="text-xl md:text-3xl">{p.icon}</span>
                   {p.link && p.link !== "#" && (
                     <a href={p.link} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-purple-400 transition-colors text-lg" title="View project">↗</a>
                   )}

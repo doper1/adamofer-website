@@ -33,7 +33,7 @@ export default async function ProjectsSection() {
               key={p.id}
               className="group relative bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-purple-500/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-purple-900/20 w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-1rem)]"
             >
-              <div className={`h-1 w-full bg-gradient-to-r ${p.gradient}`} />
+              {p.gradient && <div className={`h-1 w-full bg-gradient-to-r ${p.gradient}`} />}
 
               <div className="p-3 md:p-6">
                 <div className="flex items-start justify-between mb-3 md:mb-4">

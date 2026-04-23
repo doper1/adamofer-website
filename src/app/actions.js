@@ -491,6 +491,25 @@ export async function createPhoto(data) {
   }
 }
 
+export async function updatePhoto(id, data) {
+  try {
+    const [updated] = await db
+      .update(photos)
+      .set({
+        ...(data.url !== undefined && { url: data.url }),
+        ...(data.caption !== undefined && { caption: data.caption }),
+        ...(data.displayOrder !== undefined && { displayOrder: data.displayOrder }),
+      })
+      .where(eq(photos.id, id))
+      .returning();
+    revalidatePath("/");
+    return { success: true, data: updated };
+  } catch (error) {
+    console.error("Failed to update photo:", error);
+    return { success: false, error: "Failed to update photo." };
+  }
+}
+
 export async function deletePhoto(id) {
   try {
     await db.delete(photos).where(eq(photos.id, id));

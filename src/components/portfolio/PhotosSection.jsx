@@ -70,11 +70,6 @@ export default async function PhotosSection() {
                 <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
                   <p className="text-white text-sm font-medium mt-0.5">{photo.caption}</p>
                 </div>
-                <div className="absolute top-3 left-3">
-                  <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-black/60 backdrop-blur-sm border border-white/10 text-gray-300">
-                    {photo.category}
-                  </span>
-                </div>
               </div>
             ))}
           </div>

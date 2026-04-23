@@ -11,9 +11,9 @@ export default function ContactSection({ githubUrl, linkedinUrl, publicEmail }) 
   const displayEmail = publicEmail || "adam@example.com";
 
   const socialLinks = [
-    { label: "GitHub", href: displayGithubUrl, icon: "🐙" },
-    { label: "LinkedIn", href: displayLinkedinUrl, icon: "💼" },
-    { label: "Email", href: `mailto:${displayEmail}`, icon: "✉️" },
+    { label: "GitHub", href: displayGithubUrl },
+    { label: "LinkedIn", href: displayLinkedinUrl },
+    { label: "Email", href: `mailto:${displayEmail}` },
   ];
 
   const handleSubmit = async (e) => {
@@ -102,7 +102,7 @@ export default function ContactSection({ githubUrl, linkedinUrl, publicEmail }) 
               href={s.href}
               className="flex items-center gap-2 text-gray-500 hover:text-purple-400 transition-colors text-sm"
             >
-              <span>{s.icon}</span> {s.label}
+              {s.label}
             </a>
           ))}
         </div>

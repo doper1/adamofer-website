@@ -27,11 +27,11 @@ export default async function ExpertiseSection() {
           <div className="mt-4 w-12 md:w-16 h-1 bg-gradient-to-r from-purple-500 to-violet-500 mx-auto rounded-full" />
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-          {skillGroupList.map((s, i) => (
+        <div className="flex flex-wrap justify-center gap-6">
+          {skillGroupList.map((s) => (
             <div
               key={s.id}
-              className={`group relative bg-white/5 border border-white/10 rounded-2xl p-3 md:p-7 hover:border-purple-500/40 hover:bg-white/[0.07] transition-all duration-300 overflow-hidden ${i === skillGroupList.length - 1 && skillGroupList.length % 2 !== 0 ? 'col-span-2 md:col-span-1' : ''}`}
+              className="group relative bg-white/5 border border-white/10 rounded-2xl p-3 md:p-7 hover:border-purple-500/40 hover:bg-white/[0.07] transition-all duration-300 overflow-hidden w-[calc(50%-0.75rem)] md:w-[calc(33.333%-1rem)]"
             >
               {/* Glow on hover */}
               <div className="absolute inset-0 bg-gradient-to-br from-purple-600/0 to-violet-600/0 group-hover:from-purple-600/10 group-hover:to-violet-600/5 transition-all duration-500 rounded-2xl" />
@@ -54,21 +54,6 @@ export default async function ExpertiseSection() {
           ))}
         </div>
 
-        {/* Stats row */}
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-          {[
-            { value: "5+", label: "Years Experience" },
-            { value: "10+", label: "Technologies" },
-            { value: "100%", label: "Dedication" },
-          ].map((stat) => (
-            <div key={stat.label} className="text-center p-6 rounded-2xl bg-white/5 border border-white/10">
-              <div className="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-purple-400 to-violet-400 bg-clip-text text-transparent">
-                {stat.value}
-              </div>
-              <div className="text-gray-500 text-sm mt-1">{stat.label}</div>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   );
